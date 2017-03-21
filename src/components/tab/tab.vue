@@ -1,9 +1,9 @@
 <template>
     <div class="tab">
         <tab custom-bar-width="3rem">
-            <tab-item selected @on-item-click="handler('')">跃动扬州圈</tab-item>
-            <tab-item @on-item-click="handler('friend')">好友圈</tab-item>
-            <tab-item @on-item-click="handler('join')">加入圈子</tab-item>
+            <tab-item :selected="this.$route.path.split('/').length==2"  @on-item-click="handler('/home')">跃动扬州圈</tab-item>
+            <tab-item :selected="this.$route.path.split('/')[2]=='friend'" @on-item-click="handler('/home/friend')">好友圈</tab-item>
+            <tab-item :selected="this.$route.path.split('/')[2]=='join'" @on-item-click="handler('/home/join')">加入圈子</tab-item>
         </tab>
     </div>
 </template>
@@ -22,8 +22,7 @@
         },
         methods:{
             handler:function(val){
-                this.$route.path.split('/')[1]="/home";
-                this.$router.push(`${val}`);
+                this.$router.replace(`${val}`);
             }
         }
     }

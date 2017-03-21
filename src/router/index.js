@@ -16,7 +16,7 @@ export default new Router({
             component: resolve => require(["../components/home/home.vue"], resolve),
             children: [
                 {
-                    path: '',
+                    path: '/',
                     component: resolve => require(["../components/circles/circleYZ.vue"], resolve)
                 },
                 {
