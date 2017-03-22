@@ -28,6 +28,12 @@ export default new Router({
                     component: resolve => require(["../components/circles/joinCircle.vue"], resolve)
                 }
             ]
+        }, {
+            path: '/home/topic/addTopic',
+            name: "addTopic",
+            components: {
+                "subPage": resolve => require(["../components/topic/addTopic.vue"], resolve)
+            }
         }
     ]
 })
