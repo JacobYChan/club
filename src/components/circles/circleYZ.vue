@@ -13,7 +13,7 @@
                 <div class="conten_title">{{item.title}}</div>
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
-                        <span style="font-size:.6rem">Loading</span>
+                        <span style="font-size:.6rem">图片加载中...</span>
                         <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
                     </div>
                 </div>
@@ -142,8 +142,6 @@
                     margin-top: .2rem;
                     div {
                         padding: .1rem;
-                        max-width: 5rem;
-                        max-height: 5rem;
                         img {
                             width: 100%;
                         }
