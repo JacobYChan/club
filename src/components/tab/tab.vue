@@ -30,5 +30,10 @@
 </script>
 
 <style lang="scss">
-
+    .tab{
+        position: fixed;
+        z-index: 100;
+        width: 100%;
+        background-color:#fff;
+    }
 </style>

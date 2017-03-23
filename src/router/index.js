@@ -25,14 +25,35 @@ export default new Router({
                 },
                 {
                     path: 'join',
-                    component: resolve => require(["../components/circles/joinCircle.vue"], resolve)
+                    component: resolve => require(["../components/circles/joinCircle.vue"], resolve),
+                    children: [
+                        {
+                            path: '',
+                            component:resolve=>require(["../components/circles/circle_recommend.vue"],resolve),
+                        },
+                        {
+                            path: 'near',
+                            component:resolve=>require(["../components/circles/circle_near.vue"],resolve),
+                        },
+                        {
+                            path: 'hot',
+                            component:resolve=>require(["../components/circles/circle_hot.vue"],resolve),
+                        }
+                    ]
                 }
             ]
         }, {
-            path: '/home/topic/addTopic',
+            path: '/home/circle/topic/addTopic',
             name: "addTopic",
             components: {
                 "subPage": resolve => require(["../components/topic/addTopic.vue"], resolve)
+            }
+        },
+        {
+            path: '/home/join/circle/circleDetail',
+            name: "circleDetail",
+            components: {
+                "subPage":resolve=>require(["../components/circles/circleDetail"],resolve)
             }
         }
     ]

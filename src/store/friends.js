@@ -1,17 +1,4 @@
-/**
- * wxid-微信id
- * initial-姓名首字母
- * headerUrl-头像地址
- * nickname-昵称
- * sex-性别 男1女0
- * remark-备注
- * signature-个性签名
- * telphone-电话号码
- * album-相册
- * area-地区
- * from-来源
- * desc-描述
- */
+
 const friends = [{ //昵称备注都有的朋友
     "runid": "runid_jinxuan",
     "headerUrl": "https://sinacloud.net/vue-wechat/images/headers/header01.png",
@@ -20,6 +7,9 @@ const friends = [{ //昵称备注都有的朋友
     "telphone": 18896586152,
     "area": ["扬州市", "邗江区", "三盛国际广场"],
     "zan": 5,
+    "title": '变化无常的天气，真是郁闷啊',
+    "img": ["http://fhg.jsheyun.net/upload/shop/store/goods/13/13_05261577105497673_480.jpg", "http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05413372440496267_480.jpg","http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05416241731921873_480.jpg"],
+    "time": '2017-3-23 11:00',
     "comments": [{
         nickname: '刘安',
         comment: "怎么长这么帅？"
@@ -35,6 +25,9 @@ const friends = [{ //昵称备注都有的朋友
     "telphone": 18896586152,
     "area": ["扬州市", "邗江区", "三盛国际广场"],
     "zan": 4,
+    "title": '变化无常的天气，真是郁闷啊',
+    "img": ["http://fhg.jsheyun.net/upload/shop/store/goods/13/13_05261577105497673_480.jpg", "http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05413372440496267_480.jpg","http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05416241731921873_480.jpg"],
+    "time": '2017-3-22 11:00',
 
 }, {
     "runid": "runid_xuxiang",
@@ -44,6 +37,9 @@ const friends = [{ //昵称备注都有的朋友
     "telphone": 18896586152,
     "area": ["扬州市", "邗江区", "三盛国际广场"],
     "zan": 1,
+    "title": '变化无常的天气，真是郁闷啊',
+    "img": ["http://fhg.jsheyun.net/upload/shop/store/goods/13/13_05261577105497673_480.jpg", "http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05413372440496267_480.jpg","http://fhg.jsheyun.net/upload/shop/store/goods/116/116_05416241731921873_480.jpg"],
+    "time": '2017-3-22 11:00',
 }]
 
 const friend = {

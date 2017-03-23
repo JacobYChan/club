@@ -1,12 +1,13 @@
 <template>
     <div class="circleYZ">
-        <ul>
-            <li v-for="(item,key) in $store.state.yzCircles" :key="item.runid">
+        <template v-for="(value,key) in $store.getters.yzCirclesList" class="content">
+            <!--点赞数排序-->
+            <div class="cells" v-for="item in value">
                 <div class="head">
                     <div class="headImg"><img :src="item.headerUrl"></div>
                     <div class="headTitle ellipsis">
                         <h3>{{item.nickname}}</h3>
-                        <p>{{item.time}}</p>
+                        <p>{{item.time|filterDate}}</p>
                     </div>
                     <span v-if="item.isFocus==0" class="focus" @click="">关注</span>
                 </div>
@@ -26,20 +27,20 @@
                         </div>
                     </div>
                 </div>
-
-            </li>
-        </ul>
-        <div class="addNew" @click="$router.push('home/topic/addTopic')">
+            </div>
+        </template>
+        <div class="addNew" @click="$router.push('home/circle/topic/addTopic')">
             <i class="iconfont icon-zhaoxiangji"></i>
         </div>
     </div>
 </template>
 
 <script>
-    import { XImg } from 'vux'
+    import { XImg, dateFormat } from 'vux'
     export default {
         components: {
-            XImg
+            XImg,
+            dateFormat
         },
         filters: {
             filterLoc: function (val) {
@@ -51,6 +52,26 @@
                     arr.push(i);
                 }
                 return arr.length;
+            },
+            filterDate: function (val) {
+                if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 60) {
+                    return "1分钟前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 600) {
+                    return "5分钟前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 900) {
+                    return "10分钟前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 5000) {
+                    return "1小时前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 10000) {
+                    return "2小时前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 100000) {
+                    return "1天前"
+                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 200000) {
+                    return "2天前"
+                }else {
+                    return dateFormat(val, 'MM-DD HH:mm')
+                }
+
             }
         },
         methods: {
@@ -90,102 +111,100 @@
 <style lang="scss">
     @import '../../common/style/mixin';
     .circleYZ {
-        ul {
-            padding: .5rem;
-            background-color: #f9f9f9;
-            li {
-                border-bottom: 1px solid #ddd;
-                padding: .5rem 0;
+        padding: .5rem;
+        background-color: #f9f9f9;
+        .cells {
+            border-bottom: 1px solid #ddd;
+            padding: .5rem 0;
+            position: relative;
+            .head {
+                line-height: 1.5;
+                display: flex;
                 position: relative;
-                .head {
-                    line-height: 1.5;
-                    display: flex;
-                    position: relative;
-                    .headImg {
-                        @include wh(2rem, 2rem);
-                        img {
-                            width: 100%;
-                            @include borderRadius(50%);
-                        }
-                    }
-                    .headTitle {
-                        margin-left: .5rem;
-                        padding-top: .2;
-                        h3 {
-                            @include sc(.8rem, #333);
-                            font-weight: normal;
-                        }
-                        p {
-                            @include sc(.5rem, #999);
-                        }
-                    }
-                    .focus {
-                        width: 2.5rem;
-                        line-height: 2;
-                        @include sc(.5rem, #1CC019);
-                        text-align: center;
-                        background: darken(#F5F5F5, 5%);
-                        border: 0px solid #E5E5E5;
-                        border-radius: 1px;
-                        position: absolute;
-                        right: .5rem;
-                        top: .3rem;
+                .headImg {
+                    @include wh(2rem, 2rem);
+                    img {
+                        width: 100%;
+                        @include borderRadius(50%);
                     }
                 }
-                .conten_title {
-                    @include sc(.75rem, #333);
-                    margin: .4rem 0;
-                    line-height: 1.6;
+                .headTitle {
+                    margin-left: .5rem;
+                    h3 {
+                        @include sc(.8rem, #333);
+                        font-weight: normal;
+                    }
+                    p {
+                        @include sc(.5rem, #999);
+                    }
                 }
-                .content_img {
-                    display: flex;
+                .focus {
+                    width: 2.5rem;
+                    line-height: 2;
+                    @include sc(.5rem, #1CC019);
+                    text-align: center;
+                    background: darken(#F5F5F5, 5%);
+                    border: 0px solid #E5E5E5;
+                    border-radius: 1px;
+                    position: absolute;
+                    right: .5rem;
+                    top: .3rem;
+                }
+            }
+            .conten_title {
+                @include sc(.75rem, #333);
+                margin: .4rem 0;
+                line-height: 1.6;
+            }
+            .content_img {
+                display: flex;
+                margin-top: .2rem;
+                div {
+                    padding: .1rem;
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+            .bottom {
+                display: flex;
+                .location {
+                    @include sc(.5rem, #576B95);
+                    padding-top: .6rem;
+                    flex: 1.5;
+                }
+                .zan {
                     margin-top: .2rem;
+                    position: relative;
                     div {
-                        padding: .1rem;
-                        img {
-                            width: 100%;
+                        margin-right: .8rem;
+                        display: inline;
+                        i {
+                            @include sc(.8rem, #576B95);
+                            margin-right: .2rem;
                         }
-                    }
-                }
-                .bottom {
-                    display: flex;
-                    .location {
-                        @include sc(.5rem, #576B95);
-                        padding-top: .6rem;
-                        flex: 1.5;
-                    }
-                    .zan {
-                        margin-top: .2rem;
-                        position: relative;
-                        div {
-                            margin-right: .8rem;
-                            display: inline;
-                            i {
-                                @include sc(.8rem, #576B95);
-                                margin-right: .2rem;
-                            }
-                            span {
-                                @include sc(.5rem, #576B95);
-                                font-weight: normal;
-                            }
+                        span {
+                            @include sc(.5rem, #576B95);
+                            font-weight: normal;
                         }
                     }
                 }
             }
         }
-        .addNew{
-            background-color: #1CC019;
-            @include wh(2rem,2rem);
-            padding: .3rem;
-            @include borderRadius(50%);
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1rem;
-            text-align: center;
-            line-height: 1.8;
-            i{
-                @include sc(1.2rem,#fff);
-            }
+    }
+    
+    .addNew {
+        background-color: #1CC019;
+        @include wh(2rem, 2rem);
+        padding: .3rem;
+        @include borderRadius(50%);
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1rem;
+        text-align: center;
+        line-height: 1.8;
+        i {
+            @include sc(1.2rem, #fff);
         }
     }
 </style>
