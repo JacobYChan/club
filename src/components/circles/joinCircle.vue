@@ -5,12 +5,17 @@
 
             <tab :line-width="2">
                 <tab-item :selected="this.$route.path.split('/').length==3" @on-item-click="handler('/home/join')">推荐</tab-item>
-                <tab-item :selected="this.$route.path.split('/')[3]=='near'" @on-item-click="handler('/home/join/near')">附近</tab-item>
+                <tab-item :selected="this.$route.path.split('/')[3]=='near'" @on-item-click="handler('/home/join/near')">我的</tab-item>
                 <tab-item :selected="this.$route.path.split('/')[3]=='hot'" @on-item-click="handler('/home/join/hot')">热门</tab-item>
             </tab>
             <transition name="router-fade" mode="out-in">
-                <router-view></router-view>
+                <router-view style="margin-bottom:1.5rem;"></router-view>
             </transition>
+            <div class="create_circle">
+                <p>各种圈子福利等着你</p>
+                <router-link tag="span" to="/home/join/circle/create_circle">创建圈子</router-link>
+            </div>
+            
     </div>
 </template>
 
@@ -20,7 +25,7 @@
         components: {
             Search,
             Tab,
-            TabItem
+            TabItem,
         },
         methods: {
             resultClick(item) {
@@ -36,14 +41,14 @@
             onCancel() {
                 console.log('on cancel')
             },
-             handler: function (site) {
+            handler: function (site) {
                 this.$router.replace(site);
             }
         },
         data() {
             return {
                 results: [],
-                value: ''
+                value: '',
             }
         }
     }
@@ -64,6 +69,30 @@
     .joinCircle {
         .weui-search-bar__cancel-btn {
             font-size: .8rem;
+        }
+        .create_circle {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            background: #fafafa;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            height: 2rem;
+            line-height: 2rem;
+            p {
+                font-size: .75rem;
+                color: #999;
+                text-indent: 1rem;
+            }
+            span {
+                font-size: .7rem;
+                position: absolute;
+                right: 3.75%;
+                color: #1CC019;
+                top: 0;
+            }
         }
     }
 </style>

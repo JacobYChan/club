@@ -35,5 +35,11 @@
         z-index: 100;
         width: 100%;
         background-color:#fff;
+        .vux-tab{
+            height: 2rem;
+            .vux-tab-item{
+                line-height: 2rem;
+            }
+        }
     }
 </style>

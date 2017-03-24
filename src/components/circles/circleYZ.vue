@@ -15,7 +15,7 @@
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
                         <span style="font-size:.6rem">图片加载中...</span>
-                        <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
+                        <x-img :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
                     </div>
                 </div>
                 <div class="bottom ellipsis">

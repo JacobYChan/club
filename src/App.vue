@@ -5,7 +5,7 @@
                 <wx-header></wx-header>
             </header>
             <transition name="router-fade" mode="out-in">
-                <router-view></router-view>
+                <router-view style="padding-top: 3rem;"></router-view>
             </transition>
         </div>
         <!--其他店内页集合 有过渡效果-->
@@ -43,11 +43,11 @@
             "$route"(to, from) {
                 const toDepth = to.path.split('/').length
                 const fromDepth = from.path.split('/').length
-               
+
                 this.enterAnimate = toDepth > fromDepth ? "animated fadeInRight" : "animated fadeInLeft"
                 this.leaveAnimate = toDepth > fromDepth ? "animated fadeOutLeft" : "animated fadeOutRight"
                 // 从店面页进入店内页 需要对店内页重新设置离开动效 因为他们处于不同 name 的 router-view
-                if (toDepth === 5) {
+                if (toDepth >= 5) {
                     this.leaveAnimate = "animated fadeOutRight"
                 }
             }
