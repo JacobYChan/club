@@ -1,15 +1,191 @@
 <template>
-    <div>
-        adsssss
+    <div class="activity_detail">
+        <x-header>活动详情</x-header>
+        <div class="activity_head">
+            <div class="headImg">
+                <img :src="activityInfo.img">
+            </div>
+            <div class="title">
+                <h3>{{activityInfo.name}}</h3>
+                <span>{{activityInfo.type|filterType}}</span>
+                <div class="creater">
+                    <img :src="activityInfo.creater.headerUrl">
+                    <em>{{activityInfo.creater.name}}</em>
+                </div>
+            </div>
+        </div>
+        <div class="activity_time">
+            <h3>活动时间</h3>
+            <p>{{activityInfo.startTime|filterTime_p(activityInfo.endTime)}}</p>
+        </div>
+        <div class="activity_location">
+            <h3>活动地点</h3>
+            <p>{{activityInfo.location}}</p>
+        </div>
+        <div class="activity_des">
+            <h3>活动介绍</h3>
+            <p>{{activityInfo.desc}}</p>
+        </div>
+        <div class="activity_members">
+            <p>他们都报名了，共{{activityInfo.member.length}}人</p>
+            <div class="headImg">
+                <img :src="item" v-for="item in activityInfo.member">
+            </div>
+        </div>
+        <div class="join">
+            <x-button type="primary" @click.native="show_success=true">报名</x-button>
+        </div>
+        <toast v-model="show_success">报名成功 </toast>
+
     </div>
 </template>
 
 <script>
-    export default{
-
+    import { XHeader, dateFormat, Toast, XButton } from 'vux'
+    import activity from "../../store/activity"
+    export default {
+        components: {
+            XHeader,
+            dateFormat,
+            Toast,
+            XButton
+        },
+        data() {
+            return {
+                show_success: false,
+            }
+        },
+        computed: {
+            activityInfo() {
+                return activity.getActivityInfo(this.$route.query.activityid);
+            }
+        },
+        filters: {
+            filterType: function (type) {
+                switch (parseInt(type)) {
+                    case 1: return "徒步"; break;
+                    case 2: return "跑步"; break;
+                    case 3: return "骑行"; break;
+                    case 4: return "其他"; break;
+                }
+            },
+            filterTime_p: function (starttime, endtime) {
+                let startFormat = starttime * 1000;
+                let endFormat = endtime * 1000;
+                var start = dateFormat(startFormat, 'MM.DD HH:mm');
+                var end = dateFormat(endFormat, 'MM.DD HH:mm');
+                return `${start}-${end}`;
+            },
+        }
     }
+
 </script>
 
 <style lang="scss">
-    
+    @import '../../common/style/mixin';
+    .activity_detail {
+        background-color: #fff;
+        .vux-header {
+            background-color: #eee;
+            border-bottom: 1px solid #ddd;
+            .vux-header-left {
+                a {
+                    color: #1CC019;
+                }
+                .left-arrow {
+                    &:before {
+                        border: 1px solid #1CC019;
+                        border-width: 1px 0 0 1px;
+                    }
+                }
+            }
+            .vux-header-title {
+                color: #000;
+            }
+        }
+        .weui-icon_toast {
+            margin: 22px 0 10px 0;
+        }
+        .activity_head {
+            display: flex;
+            padding: .5rem 0;
+            margin: 0 .5rem;
+            border-bottom: 1px solid #ddd;
+            .headImg {
+                @include wh(3rem, 3rem);
+                img {
+                    width: 100%;
+                }
+            }
+            .title {
+                margin-left: .5rem;
+                h3 {
+                    @include sc(.7rem, #000);
+                    font-weight: normal;
+                }
+                span {
+                    border-radius: .4rem;
+                    border: 1px solid #1bc114;
+                    @include sc(.4rem, #1bc114);
+                    padding: .05rem .2rem;
+                }
+                .creater {
+                    display: flex;
+                    margin-top: .3rem;
+                    img {
+                        @include wh(1.2rem, 1.2rem);
+                        border-radius: 50%;
+                    }
+                    em {
+                        @include sc(.5rem, #666);
+                        font-style: normal;
+                        margin-left: .5rem;
+                        margin-top: .2rem;
+                    }
+                }
+            }
+        }
+        .activity_time {
+            line-height: 1.8;
+            border-bottom: 1px solid #ddd;
+            margin: 0 .5rem;
+            padding: .5rem 0;
+            h3 {
+                @include sc(.8rem, #000);
+                font-weight: normal;
+            }
+            p {
+                @include sc(.7rem, #000);
+            }
+        }
+        .activity_location {
+            @extend .activity_time;
+            p {
+                color: #1bc114;
+            }
+        }
+        .activity_des {
+            @extend .activity_time;
+        }
+        .activity_members {
+            margin:  0 .5rem;
+            padding: .5rem 0;
+            @include sc(.7rem, #000);
+
+            .headImg {
+                img {
+                    display: inline;
+                    @include wh(2rem,2rem);
+                    border-radius: 50%;
+                    margin: .5rem .3rem;
+                }
+            }
+        }
+        .join {
+            padding: .5rem;
+            .weui-btn {
+                font-size: .8rem;
+            }
+        }
+    }
 </style>

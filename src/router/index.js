@@ -76,14 +76,14 @@ export default new Router({
             component: resolve => require(["../components/activity/activity"], resolve)
         },
         {
-            path: '/activity/activityDetail',
+            path: '/activity/find/check/detail',
             name: 'activityDetail',
             components: {
                 "subPage": resolve => require(["../components/activity/activityDetail"], resolve)
             }
         },
         {
-            path: '/activity/create_activity',
+            path: '/activity/find/create/activity',
             name: 'createActivity',
             components: {
                 "subPage": resolve => require(["../components/activity/createActivity"], resolve)
