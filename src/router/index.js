@@ -88,6 +88,28 @@ export default new Router({
             components: {
                 "subPage": resolve => require(["../components/activity/createActivity"], resolve)
             }
+        },
+        {
+            path: '/message',
+            name: 'message',
+            component: resolve => require(["../components/messages/messages"], resolve)
+        },
+        {
+            path: '/message/find/check/detail',
+            name: 'messageDetail',
+            components: {
+                "subPage": resolve => require(["../components/messages/messageDetail"], resolve)
+            }
+        },
+        {
+            path: '/article',
+            component: resolve => require(["../components/articles/article"], resolve),
+            children: [
+                {
+                    path: '/article/:id',
+                    component: resolve => require(["../components/articles/articleList"], resolve)
+                }
+            ]
         }
     ]
 })

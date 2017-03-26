@@ -35,7 +35,7 @@ const activities = [{
     startTime: "1489892400",//2017/3/19 11:0:0
     endTime: "1490238000",//2017/3/23 11:0:0
     location: "宋夹城南门",
-    type:"3",//2代表骑行
+    type:"3",//3代表骑行
     creater: {
         name: "徐翔",
         headerUrl: "http://cdn.sinacloud.net/vue-wechat/images/OfficialAccount/overwatch.JPG"

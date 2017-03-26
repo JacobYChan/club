@@ -10,7 +10,7 @@
                 <tab-item :selected="this.$route.path.split('/')[1]=='message'" @on-item-click="handler('/message')"><i class="iconfont icon-xiaoxi"></i>
                     <p>消息</p>
                 </tab-item>
-                <tab-item :selected="this.$route.path.split('/')[1]=='science'" @on-item-click="handler('/science')"><i class="iconfont icon-xinlikepu"></i>
+                <tab-item :selected="this.$route.path.split('/')[1]=='article'" @on-item-click="handler('/article')"><i class="iconfont icon-xinlikepu"></i>
                     <p>科普</p>
                 </tab-item>
             </tab>
