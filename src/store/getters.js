@@ -17,15 +17,15 @@ const getters = {
         return initialList
     },
 
-    //  从扬州圈子联系人中提取出点赞数 再排序 
+    //  从扬州圈子联系人中提取出时间 再排序 
 
     yzCirclesInitialList: state => {
         var yzInitialList = [],
             allCircles = state.yzCircles,
             max = allCircles.length
         for (var i = 0; i < max; i++) {
-            if (yzInitialList.indexOf(allCircles[i].zan) == -1) {
-                yzInitialList.push(allCircles[i].zan)
+            if (yzInitialList.indexOf(allCircles[i].time) == -1) {
+                yzInitialList.push(allCircles[i].time)
             }
         }
         yzInitialList.sort(function (a, b) {
@@ -52,7 +52,7 @@ const getters = {
     },
 
 
-    // 将扬州圈子联系人根据点赞数进行分类、排序
+    // 将扬州圈子联系人根据时间进行分类、排序
     yzCirclesList: (state, getters) => {
         var yzCirclesList = {},
             allCircles = state.yzCircles,
@@ -61,7 +61,7 @@ const getters = {
             var protoTypeName = getters.yzCirclesInitialList[i]
             yzCirclesList[i] = []
             for (var j = 0; j < max; j++) {
-                if (allCircles[j].zan === protoTypeName) {
+                if (allCircles[j].time === protoTypeName) {
                     yzCirclesList[i].push(allCircles[j])
                 }
             }

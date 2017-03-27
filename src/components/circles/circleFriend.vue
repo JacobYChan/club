@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="bottom ellipsis">
-                    <div class="location">{{item.area| filterLoc }}</div>
+                    <!--<div class="location">{{item.area| filterLoc }}</div> -->
                     <div class="zan">
                         <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.zan}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
@@ -53,25 +53,27 @@
                 }
                 return arr.length;
             },
-            filterDate:function(val){
-                if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<60){
+            filterDate: function (val) {
+                let now = Date.parse(new Date()) / 1000;
+                console.log(now - val);
+                if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
-                }else if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<600){
+                } else if ((now - val) < 1200 && (now - val) >= 600) {
                     return "5分钟前"
-                }else if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<900){
+                } else if ((now - val) < 6000 && (now - val) >= 1200) {
                     return "10分钟前"
-                }else if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<5000){
+                } else if ((now - val) < 12000 && (now - val) >= 6000) {
                     return "1小时前"
-                }else if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<10000){
+                } else if ((now - val * 1) < 120000 && (now - val) >= 12000) {
                     return "2小时前"
-                }else if((new Date().getTime()-new Date(val.replace(/-/,"/")))/1000<100000){
+                } else if ((now - val * 1) < 240000 && (now - val) >= 120000) {
                     return "1天前"
-                }else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 200000) {
+                } else if ((now - val * 1) && (now - val) >= 240000) {
                     return "2天前"
-                }else{
-                    return dateFormat(val, 'MM-DD HH:mm')
+                } else {
+                    return dateFormat(val * 1000, 'MM-DD HH:mm')
                 }
-                
+
             }
         },
         methods: {
@@ -168,14 +170,16 @@
             }
             .bottom {
                 display: flex;
-                .location {
-                    @include sc(.5rem, #576B95);
-                    padding-top: .6rem;
-                    flex: 1.5;
-                }
+                text-align: right;
+                // .location {
+                //     @include sc(.5rem, #576B95);
+                //     padding-top: .6rem;
+                //     flex: 1.5;
+                // }
                 .zan {
                     margin-top: .2rem;
                     position: relative;
+                    width: 100%;
                     div {
                         margin-right: .8rem;
                         display: inline;

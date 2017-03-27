@@ -8,12 +8,14 @@
         <div class="weui_uploader_bd">
             <ul class="weui_uploader_files">
             </ul>
-            <div class="weui_uploader_input_wrp" @click="show=!show"></div>
+            <div class="weui_uploader_input_wrp" @click="show=!show">
+                <!--<input accept="image/*" type="file"> -->
+            </div>
         </div>
-        <div class="location ellipsis">
+        <!--<div class="location ellipsis">
             <i class="iconfont icon-10"></i>
             <span>{{address}}</span>
-        </div>
+        </div> -->
         <div class="sub">
             <x-button type="primary">完成</x-button>
         </div>
@@ -108,17 +110,17 @@
                 }
             }
         }
-        .location {
-            padding: 10px 15px;
-            background: #fff;
-            margin-top: 1rem;
-            i {
-                font-size: 1rem;
-            }
-            span {
-                @include sc(.8rem, #333);
-            }
-        }
+        // .location {
+        //     padding: 10px 15px;
+        //     background: #fff;
+        //     margin-top: 1rem;
+        //     i {
+        //         font-size: 1rem;
+        //     }
+        //     span {
+        //         @include sc(.8rem, #333);
+        //     }
+        // }
         .sub{
             position: fixed;
             width: 100%;

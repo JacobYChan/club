@@ -4,7 +4,7 @@
             tag="div" class="message_info" v-on:click.native="toggleMsgRead">
             <div class="header-box">
                 <!--未读才显示新信息数量-->
-                <badge class="new-msg-count" :text="item.msg.length" v-show="!read"></badge>
+                <!-- <badge class="new-msg-count" :text="item.msg.length" v-show="!read"></badge> -->
                 <div class="headImg">
                     <img :src="item.user.headerUrl">
                 </div>
@@ -57,7 +57,7 @@
 <style lang="scss">
     @import '../../common/style/mixin';
     .message {
-        padding: .5rem;
+        padding: .8rem .5rem;
         border-bottom: 1px solid #ddd;
         background-color: #fff;
         .message_info {

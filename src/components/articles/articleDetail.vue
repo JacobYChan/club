@@ -1,17 +1,86 @@
 <template>
     <div class="articleDetail">
-
+        <x-header>文章详情</x-header>
+        <div class="head">
+            <h3>{{articleDetail.title}}</h3>
+            <p>{{articleDetail.time|filterTime}}</p>
+            <span>内容摘要：{{articleDetail.desc}}</span>
+        </div>
+        <div v-html="articleDetail.content" class="content"></div>
     </div>
 </template>
 
 <script>
-    export default{
-        
+    import articles from "../../store/articles"
+    import { dateFormat, XHeader } from 'vux'
+    export default {
+        components: {
+            dateFormat,
+            XHeader
+        },
+        filters: {
+            filterTime: function (value) {
+                let time = value * 1000;
+                return dateFormat(time, 'YYYY-MM-DD HH:mm');
+            }
+        },
+        computed: {
+            articleDetail() {
+                let articleDetail = [];
+                let currentArticle = new Object();
+                articleDetail = articles.getArticleCategory(this.$route.params.categoryid).articles;
+                articleDetail.forEach(value => {
+                    if (this.$route.params.articleid == value.articleid) {
+                        currentArticle = value;
+                    }
+                })
+                return currentArticle;
+            },
+        },
     }
+
 </script>
 
 <style lang="scss">
-    .articleDetail{
-
+    .articleDetail {
+        .vux-header {
+            background-color: #eee;
+            border-bottom: 1px solid #ddd;
+            .vux-header-left {
+                a {
+                    color: #1CC019;
+                }
+                .left-arrow {
+                    &:before {
+                        border: 1px solid #1CC019;
+                        border-width: 1px 0 0 1px;
+                    }
+                }
+            }
+            .vux-header-title {
+                color: #000;
+            }
+        }
+        .head{
+            padding: .5rem;
+            line-height: 1.8;
+            background-color:#fff; 
+            h3{
+                font-size: .8rem;
+            }
+            p{
+                font-size: .6rem;
+                color:#666;
+            }
+            span{
+                font-size: .7rem;
+            }
+        }
+        .content{
+            height: 100%;
+            background-color: #fff;
+            padding: 0rem .5rem .5rem .5rem;
+            font-size: .7rem;
+        }
     }
 </style>

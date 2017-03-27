@@ -7,18 +7,20 @@ const article_categories =
                 {
                     "articleid": "01",
                     "title": "文章标题1",
-                    "describtion": "描述1",
+                    "desc": "描述1",
                     "time": "1490756400",
-                    "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "url": "",
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容1html。。。"
                 },
                 {
                     "articleid": "02",
                     "title": "文章标题1",
-                    "describtion": "描述1",
+                    "desc": "描述1",
                     "time": "1490756400",
                     "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容2html。。。"
                 },
             ]
         },
@@ -27,20 +29,22 @@ const article_categories =
             "title": "跑步经",
             "articles": [
                 {
-                    "articleid": "01",
-                    "title": "文章标题1",
-                    "describtion": "描述1",
+                    "articleid": "03",
+                    "title": "文章标题2",
+                    "desc": "描述1",
                     "time": "1490756400",
                     "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容3html。。。"
                 },
                 {
-                    "articleid": "02",
-                    "title": "文章标题1",
-                    "describtion": "描述1",
+                    "articleid": "04",
+                    "title": "文章标题2",
+                    "desc": "描述1",
                     "time": "1490756400",
                     "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容4html。。。"
                 },
             ]
         },
@@ -49,20 +53,22 @@ const article_categories =
             "title": "减肥茶",
             "articles": [
                 {
-                    "articleid": "01",
-                    "title": "文章标题1",
-                    "describtion": "描述1",
+                    "articleid": "05",
+                    "title": "文章标题3",
+                    "desc": "描述1",
                     "time": "1490756400",
                     "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容5html。。。"
                 },
                 {
-                    "articleid": "02",
-                    "title": "文章标题1",
-                    "describtion": "描述1",
+                    "articleid": "06",
+                    "title": "文章标题3",
+                    "desc": "描述1",
                     "time": "1490756400",
                     "url": "http://baidu.com",
-                    "img": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg"
+                    "src": "http://pic6.huitu.com/res/20130116/84481_20130116142820494200_1.jpg",
+                    "content": "文章内容6html。。。"
                 },
             ]
         },

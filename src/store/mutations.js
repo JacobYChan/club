@@ -1,8 +1,4 @@
 
-import {
-    setStore,
-    getStore,
-} from '../config/mUtils'
 
 const mutations = {
     updateLoadingStatus(state, payload) {

@@ -104,12 +104,21 @@ export default new Router({
         {
             path: '/article',
             component: resolve => require(["../components/articles/article"], resolve),
+             redirect: '/article/1',
             children: [
                 {
-                    path: '/article/:id',
+                    path: '/article/:categoryid',
+                    name:'articleList',
                     component: resolve => require(["../components/articles/articleList"], resolve)
                 }
             ]
+        },
+        {
+            path: '/article/:categoryid/detail/:articleid',
+            name: 'article',
+            components: {
+                "subPage":resolve=>require(["../components/articles/articleDetail"],resolve)
+            }
         }
     ]
 })

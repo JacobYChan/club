@@ -10,9 +10,6 @@
                     <h3>{{item.name}}</h3>
                     <p class="ellipsis">{{item.desc}}</p>
                 </div>
-                <div class="circle_distance">
-                    {{item.distance}}千米
-                </div>
                 </router-link>
         </template>
     </div>
@@ -86,12 +83,6 @@
                 p {
                     @include sc(.5rem, #999);
                 }
-            }
-            .circle_distance {
-                position: absolute;
-                right: .4rem;
-                top: .5rem;
-                @include sc(.5rem, #999);
             }
         }
     }
