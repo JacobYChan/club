@@ -1,53 +1,33 @@
 <template>
     <div class="circle_recommend">
-        <template v-for="(value,key) in CircleRecommendAccountsList">
-            <router-link class="circle_ceil" :to="{path:'join/circle/circleDetail',query:{circleid:item.circleid}}" tag="div" v-for="(item,index) in value"
+        <template v-for="(value,key) in circle_recommend_list">
+            <router-link class="circle_ceil" :to="{path:'join/circle/circleDetail',query:{circleid:item.id}}" tag="div" v-for="(item,index) in value"
                 :key="index">
                 <div class="circle_img">
-                    <img :src="item.headerUrl">
+                    <img :src="item.icon">
                 </div>
                 <div class="circle_title">
                     <h3>{{item.name}}</h3>
-                    <p class="ellipsis">{{item.desc}}</p>
+                    <p class="ellipsis">{{item.describtion}}</p>
                 </div>
                 </router-link>
         </template>
     </div>
 </template>
-
 <script>
+    import { mapGetters } from 'vuex'
+
     export default {
+        created() {
+            // if (this.circle_recommend_list.length == 0) {
+                this.$store.dispatch('get_circles_recommend_list')
+            // }
+        },
         computed: {
-            // 提取圈子字母 排序，所有附近圈子被存放在 circle_recommend.js 中
-            initialList: function () {
-                var initialList = [],
-                    circle_recommend = this.$store.state.circles_recommend,
-                    max = circle_recommend.length
-                for (var i = 0; i < max; i++) {
-                    if (initialList.indexOf(circle_recommend[i].initial) == -1) {
-                        initialList.push(circle_recommend[i].initial)
-                    }
-                }
-                initialList.sort()
-                return initialList
-            },
-            // 将圈子按照字母分类
-            CircleRecommendAccountsList() {
-                var circle_recommendList = {},
-                    circle_recommend = this.$store.state.circles_recommend,
-                    max = circle_recommend.length;
-                for (var i = 0; i < this.initialList.length; i++) {
-                    var protoTypeName = this.initialList[i]
-                    circle_recommendList[protoTypeName] = []
-                    for (var j = 0; j < max; j++) {
-                        if (circle_recommend[j].initial === protoTypeName) {
-                            circle_recommendList[protoTypeName].push(circle_recommend[j])
-                        }
-                    }
-                }
-                return circle_recommendList
-            }
-        }
+            ...mapGetters([
+                'circle_recommend_list'
+            ])
+        },
     }
 
 </script>

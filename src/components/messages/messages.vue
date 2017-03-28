@@ -1,7 +1,7 @@
 <template>
     <div class="messages">
         <ul class="messages_list">
-            <msg-item v-for="msgObj in $store.state.messages" :item="msgObj" :key="msgObj.mid"></msg-item>
+            <div v-for="msgObj in $store.state.messages" :item="msgObj" :key="msgObj.mid"></div>
         </ul>
     </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div class="circleYZ">
-        <template v-for="(value,key) in $store.getters.yzCirclesList" class="content">
+        <template v-for="(value,key) in circles_yz_list" class="content">
             <!--点赞数排序-->
             <div class="cells" v-for="item in value">
                 <div class="head">
@@ -37,6 +37,8 @@
 
 <script>
     import { XImg, dateFormat } from 'vux'
+    import { mapGetters } from 'vuex'
+
     export default {
         components: {
             XImg,
@@ -55,7 +57,7 @@
             },
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
-                console.log(now - val);
+                // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
                 } else if ((now - val) < 1200 && (now - val) >= 600) {
@@ -75,6 +77,16 @@
                 }
 
             }
+        },
+        created() {
+        //     if (this.sportsList.length == 0) {
+                this.$store.dispatch('get_circles_yz_list')
+        //     }
+        },
+        computed: {
+            ...mapGetters([
+                'circles_yz_list'
+            ])
         },
         methods: {
             //图片加载成功和失败

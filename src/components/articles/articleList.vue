@@ -1,48 +1,31 @@
 <template>
     <div class="articleList">
-        <swiper loop auto :list="imgInfo"></swiper>
-        <panel :list="articleInfo"></panel>
+        <swiper loop auto :list="articleimg"></swiper>
+        <panel :list="articletext"></panel>
     </div>
 </template>
 
 <script>
     import { Panel, Swiper } from 'vux'
-    import articles from "../../store/articles"
+    import { mapGetters } from 'vuex'
 
     export default {
         components: {
             Panel,
             Swiper
         },
+        created(){
+            this.$store.dispatch('get_article_list', this.$route.params.categoryid)
+        },
         computed: {
-            articleInfo() {
-                let new_articles = [];
-                new_articles = articles.getArticleCategory(this.$route.params.categoryid).articles;
-                new_articles.forEach(value => {
-                    if (value.url == "") {
-                        value.url = `${this.$route.path}/detail/${value.articleid}`;
-                    }
-                })
-                this.list = new_articles;
-                return this.list;
-            },
-            imgInfo() {
-                let new_imgs = [];
-                new_imgs = articles.getArticleCategory(this.$route.params.categoryid).articles;
-                new_imgs.forEach(value => {
-                    if (value.url == "") {
-                        value.url = `${this.$route.path}/detail/${value.articleid}`;
-                    }
-                    this.$set(value, "img", value.src);
-                })
-                this.imgList = new_imgs;
-                return this.imgList.slice(0, 3);
-            }
+            ...mapGetters([
+                'articletext',
+                'articleimg'
+            ])
         },
         data() {
             return {
-                list: [],  //所有文章列表
-                imgList: []//所有轮播图列表
+
             }
         }
     }

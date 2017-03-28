@@ -1,3 +1,6 @@
+import Vue from 'vue';
+// import api from '../api';
+
 
 const yzCircles = [
         { //昵称备注都有的朋友

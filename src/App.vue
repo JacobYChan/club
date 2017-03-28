@@ -35,7 +35,7 @@
         },
         computed: {
             ...mapState({
-                isLoading: state => state.isLoading
+                isLoading: state => state.common.isLoading
             })
         },
         watch: {

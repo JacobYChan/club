@@ -19,12 +19,12 @@ import './config/rem'
 filters(Vue)
 
 router.beforeEach(function (to, from, next) {
-    store.commit('updateLoadingStatus', { isLoading: true })
+	store.dispatch('updateLoadingStatus', { isLoading: true })
     next()
 })
 
 router.afterEach(function (to) {
-    store.commit('updateLoadingStatus', { isLoading: false })
+	store.dispatch('updateLoadingStatus', { isLoading: false })
 })
 
 FastClick.attach(document.body)

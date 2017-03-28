@@ -1,17 +1,17 @@
 <template>
     <div class="circle_hot">
-        <template v-for="(value,key) in CircleHotAccountsList">
-            <router-link class="circle_ceil" :to="{path:'circle/circleDetail',query:{circleid:item.circleid}}" tag="div" v-for="(item,index) in value"
+        <template v-for="(value,key) in circles_hot_list">
+            <router-link class="circle_ceil" :to="{path:'circle/circleDetail',query:{circleid:item.id}}" tag="div" v-for="(item,index) in value"
                 :key="index">
                 <div class="circle_img">
-                    <img :src="item.headerUrl">
+                    <img :src="item.icon">
                 </div>
                 <div class="circle_title">
                     <h3>{{item.name}}</h3>
-                    <p class="ellipsis">{{item.desc}}</p>
+                    <p class="ellipsis">{{item.describtion}}</p>
                 </div>
                 <div class="circle_member">
-                    {{item.member}}人参加
+                    {{item.nums}}人参加
                 </div>
                 </router-link>
         </template>
@@ -19,40 +19,19 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
+
     export default {
+        created() {
+        //     if (this.sportsList.length == 0) {
+                this.$store.dispatch('get_circles_hot_list')
+        //     }
+        },
         computed: {
-            // 提取圈子报名人数 排序，所有附近圈子被存放在 circle_hot.js 中
-            initialList: function () {
-                var initialList = [],
-                    circle_hot = this.$store.state.circles_hot,
-                    max = circle_hot.length
-                for (var i = 0; i < max; i++) {
-                    if (initialList.indexOf(circle_hot[i].member) == -1) {
-                        initialList.push(circle_hot[i].member)
-                    }
-                }
-                initialList.sort(function (a, b) {
-                    return b-a
-                })
-                return initialList
-            },
-            // 将圈子按照报名人数分类
-            CircleHotAccountsList() {
-                var circle_hotList = {},
-                    circle_hot = this.$store.state.circles_hot,
-                    max = circle_hot.length;
-                for (var i = 0; i < this.initialList.length; i++) {
-                    var protoTypeName = this.initialList[i]
-                    circle_hotList[i] = []
-                    for (var j = 0; j < max; j++) {
-                        if (circle_hot[j].member === protoTypeName) {
-                            circle_hotList[i].push(circle_hot[j])
-                        }
-                    }
-                }
-                return circle_hotList
-            }
-        }
+            ...mapGetters([
+                'circles_hot_list'
+            ])
+        },
     }
 
 </script>

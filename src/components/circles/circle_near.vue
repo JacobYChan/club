@@ -1,14 +1,14 @@
 <template>
     <div class="circle_near">
-        <template v-for="(value,key) in CircleNearAccountsList">
-            <router-link class="circle_ceil" :to="{path:'circle/circleDetail',query:{circleid:item.circleid}}" tag="div" v-for="(item,index) in value"
+        <template v-for="(value,key) in circles_near_list">
+            <router-link class="circle_ceil" :to="{path:'circle/circleDetail',query:{circleid:item.id}}" tag="div" v-for="(item,index) in value"
                 :key="index">
                 <div class="circle_img">
-                    <img :src="item.headerUrl">
+                    <img :src="item.icon">
                 </div>
                 <div class="circle_title">
                     <h3>{{item.name}}</h3>
-                    <p class="ellipsis">{{item.desc}}</p>
+                    <p class="ellipsis">{{item.describtion}}</p>
                 </div>
                 </router-link>
         </template>
@@ -16,41 +16,19 @@
 </template>
 
 <script>
-    export default {
-        computed: {
-            // 提取圈子距离 排序，所有附近圈子被存放在 circle_near.js 中
-            initialList: function () {
-                var initialList = [],
-                    circles_near = this.$store.state.circles_near,
-                    max = circles_near.length
-                for (var i = 0; i < max; i++) {
-                    if (initialList.indexOf(circles_near[i].distance) == -1) {
-                        initialList.push(circles_near[i].distance)
-                    }
-                }
-                initialList.sort(function (a, b) {
-                    return a - b
-                })
+    import { mapGetters } from 'vuex'
 
-                return initialList
-            },
-            // 将圈子按照距离分类
-            CircleNearAccountsList() {
-                var circles_nearList = {},
-                    circles_near = this.$store.state.circles_near,
-                    max = circles_near.length;
-                for (var i = 0; i < this.initialList.length; i++) {
-                    var protoTypeName = this.initialList[i]
-                    circles_nearList[protoTypeName] = []
-                    for (var j = 0; j < max; j++) {
-                        if (circles_near[j].distance === protoTypeName) {
-                            circles_nearList[protoTypeName].push(circles_near[j])
-                        }
-                    }
-                }
-                return circles_nearList
-            }
-        }
+    export default {
+        created() {
+        //     if (this.sportsList.length == 0) {
+                this.$store.dispatch('get_circles_near_list')
+        //     }
+        },
+        computed: {
+            ...mapGetters([
+                'circles_near_list'
+            ])
+        },
     }
 
 </script>

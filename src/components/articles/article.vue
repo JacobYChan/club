@@ -2,13 +2,12 @@
     <div class="articles">
         <scroller lock-y :scrollbar-x=false>
             <div class="scroller" :style="{width:calWidth+'rem'}">
-                <router-link class="article_category"  :to="{name:'articleList',params:{categoryid:item.categoryid}}"
-                    tag="div" v-for="(item,index) in $store.state.articleCategory" :key="index">
+                <router-link class="article_category"  :to="{name:'articleList',params:{categoryid:item.id}}"
+                    tag="div" v-for="(item,index) in articlecategory" :key="index">
                     <span>{{item.title}}</span>
                     </router-link>
             </div>
         </scroller>
-        
         <transition name="router-fade" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -17,13 +16,14 @@
 
 <script>
     import { Scroller } from 'vux'
-    
+    import { mapGetters } from 'vuex'
+
     export default {
         components: {
             Scroller
         },
         created(){
-            this.activeIndex=this.$route.params.categoryid;
+            this.$store.dispatch('get_article_category_list')
         },
         data() {
             return {
@@ -32,8 +32,11 @@
         },
         computed: {
             calWidth() {
-                return this.$store.state.articleCategory.length * 4;
+                return this.articlecategory.length * 4;
             },
+            ...mapGetters([
+                'articlecategory'
+            ])
         }
     }
 

@@ -46,7 +46,6 @@
             <span class="margin">加入圈子</span>
         </div>
         <toast v-model="show_success">成功加入圈子 </toast>
-        
     </div>
 </template>
 

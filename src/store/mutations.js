@@ -1,5 +1,3 @@
-
-
 const mutations = {
     updateLoadingStatus(state, payload) {
         state.isLoading = payload.isLoading

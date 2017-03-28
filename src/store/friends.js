@@ -1,3 +1,15 @@
+import api from '../fetch/api'
+
+const state = {
+    allFriends: [], //所有朋友
+}
+
+// api.v3_notify_list().then(res => {
+//     console.log(res)
+//     state.commit('allFriends', res)
+// })
+
+// console.log(this.friends);
 
 const friends = [{ //昵称备注都有的朋友
     "runid": "runid_jinxuan",
@@ -58,3 +70,7 @@ friend.getUserInfo = function (runid) {
 }
 
 export default friend
+
+// export default {
+    // state,
+// }
