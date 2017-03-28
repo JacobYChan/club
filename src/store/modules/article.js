@@ -4,6 +4,7 @@ import * as types from '../mutation-types';
 const state = {
     articlecategory : [],
 	articlelist: [],
+    articledetail: [],
 }
 
 const actions = {
@@ -19,6 +20,12 @@ const actions = {
 // console.log(res)
         })
     },
+    get_article_detail({ commit }, id) {
+        api.v3_article_article(id).then(res => {
+            commit(types.GET_ARTICLE_DETAIL, res)
+// console.log(res)
+        })
+    },
 }
 
 const getters = {
@@ -28,13 +35,14 @@ const getters = {
             articlelist = state.articlelist;
         articlelist.forEach(value => {
             if (value.url == "") {
-                // value.url = `${this.$route.path}/detail/${value.id}`;
+                value.url = `/article/detail/${value.id}`;
             }
-            // Vue.$set(value, 'src', value.img);
-            console.log(value);
+            value['src'] = value.img;
+            value['desc'] = value.describtion;
+// console.log(value.src);
         })
         article_text_list = articlelist;
-console.log(article_text_list);
+// console.log(article_text_list);
         return article_text_list;
     },
     articleimg: state => {
@@ -42,13 +50,14 @@ console.log(article_text_list);
             articlelist = state.articlelist;
         articlelist.forEach(value => {
             if (value.url == "") {
-                // value.url = `${$route.path}/detail/${value.id}`;
+                value.url = `/article/detail/${value.id}`;
             }
-            console.log(value.url);
+// console.log(value.url);
         })
         article_img_list = articlelist;
         return article_img_list.slice(0, 3);
     },
+    articledetail: state => state.articledetail,
 }
 
 const mutations = {
@@ -57,6 +66,10 @@ const mutations = {
     },
     [types.GET_ARTICLE_LIST](state, res) {
         state.articlelist = res.retdata
+    },
+    [types.GET_ARTICLE_DETAIL](state, res) {
+// console.log(res.retdata);
+        state.articledetail = res.retdata
     },
 }
 

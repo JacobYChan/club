@@ -2,17 +2,17 @@
     <div class="articleDetail">
         <x-header>文章详情</x-header>
         <div class="head">
-            <h3>{{articleDetail.title}}</h3>
-            <p>{{articleDetail.time|filterTime}}</p>
-            <span>内容摘要：{{articleDetail.desc}}</span>
+            <h3>{{articledetail.title}}</h3>
+            <p>{{articledetail.time|filterTime}}</p>
+            <span>内容摘要：{{articledetail.describtion}}</span>
         </div>
-        <div v-html="articleDetail.content" class="content"></div>
+        <div v-html="articledetail.content" class="content"></div>
     </div>
 </template>
 
 <script>
-    import articles from "../../store/articles"
     import { dateFormat, XHeader } from 'vux'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             dateFormat,
@@ -24,18 +24,13 @@
                 return dateFormat(time, 'YYYY-MM-DD HH:mm');
             }
         },
+        created(){
+            this.$store.dispatch('get_article_detail', this.$route.params.articleid)
+        },
         computed: {
-            articleDetail() {
-                let articleDetail = [];
-                let currentArticle = new Object();
-                articleDetail = articles.getArticleCategory(this.$route.params.categoryid).articles;
-                articleDetail.forEach(value => {
-                    if (this.$route.params.articleid == value.articleid) {
-                        currentArticle = value;
-                    }
-                })
-                return currentArticle;
-            },
+            ...mapGetters([
+                'articledetail'
+            ])
         },
     }
 

@@ -51,7 +51,7 @@
 
 <script>
     import { XHeader, XImg, dateFormat, Toast } from 'vux'
-    import circles from "../../store/circles_near"
+    // import circles from "../../store/circles_near"
     export default {
         components: {
             XHeader,

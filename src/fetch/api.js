@@ -80,11 +80,11 @@ export default {
     	// return fetch('/api/v3/article/list', id);
     	return fetch('/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/article/list', id);
   	},
-  	// //文章内容
-  	// v3_article_article() {
-   //  	// return Vue.http.post('api/v3/article/article', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/article/article', params);
-  	// },
+  	// 文章内容
+  	v3_article_article(id) {
+    	// return fetch('/api/v3/article/article', id);
+    	return fetch('/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/article/article', id);
+  	},
   	// 文章分类全部
   	v3_article_getcategory() {
         return fetch('/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/article/getcategory')

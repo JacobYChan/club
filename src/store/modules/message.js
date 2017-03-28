@@ -3,7 +3,7 @@ import * as types from '../mutation-types';
 
 // 通用配置
 const state = {
-	messages: [],
+	messagelist: [],
 }
 
 const actions = {
@@ -29,7 +29,7 @@ const actions = {
 }
 
 const getters = {
-	messages: state => state.messages,
+	messages: state => state.messagelist,
 }
 
 const mutations = {
