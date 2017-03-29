@@ -1,23 +1,24 @@
 <template>
     <li class="message">
-        <router-link :to="{ path: '/message/find/check/detail', query: { mid: item.mid,name:item.group_name||item.user.nickname,type:item.type}}"
+        <router-link :to="{ path: '/message/find/check/detail', query: { mid: item.type, name: item.group_name}}"
             tag="div" class="message_info" v-on:click.native="toggleMsgRead">
             <div class="header-box">
                 <!--未读才显示新信息数量-->
                 <!-- <badge class="new-msg-count" :text="item.msg.length" v-show="!read"></badge> -->
                 <div class="headImg">
-                    <img :src="item.user.headerUrl">
+                    <img :src="item.icon">
                 </div>
             </div>
             <div class="desc-box">
-                <div class="desc-author" v-if="item.type=='official'">{{item.group_name}}</div>
+                <div class="desc-author">{{item.group_name}}</div>
                 <!--如果是个人消息-->
-                <div class="desc-author" v-else>{{item.user.nickname}}</div>
-                <div class="desc-msg ellipsis">
-                    <span>{{item.msg[item.msg.length-1].text}}</span>
+                <div class="desc-msg ellipsis" v-if="item.msg.length !== 0">
+                    <!-- <span>{{item.msg[item.msg.length-1].content}}</span> -->
                 </div>
             </div>
-            <div class="desc-time">{{item.msg[item.msg.length-1].date | filterTime}}</div>
+            <div class="desc-time" v-if="item.msg.length !== 0">
+                <!-- {{item.msg[item.msg.length-1].time|filterTime}} -->
+            </div>
             </router-link>
     </li>
 </template>
@@ -34,7 +35,7 @@
             filterTime: function (value) {
                 let time = value * 1000;
                 return dateFormat(time, 'MM-DD');
-            }
+            },
         },
         data() {
             return {

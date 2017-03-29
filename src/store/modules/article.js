@@ -35,14 +35,12 @@ const getters = {
             articlelist = state.articlelist;
         articlelist.forEach(value => {
             if (value.url == "") {
-                value.url = `/article/detail/${value.id}`;
+                value.url = `/article/detail/show/${value.id}`;
             }
             value['src'] = value.img;
             value['desc'] = value.describtion;
-// console.log(value.src);
         })
         article_text_list = articlelist;
-// console.log(article_text_list);
         return article_text_list;
     },
     articleimg: state => {
@@ -50,9 +48,8 @@ const getters = {
             articlelist = state.articlelist;
         articlelist.forEach(value => {
             if (value.url == "") {
-                value.url = `/article/detail/${value.id}`;
+                value.url = `/article/detail/show/${value.id}`;
             }
-// console.log(value.url);
         })
         article_img_list = articlelist;
         return article_img_list.slice(0, 3);
@@ -68,7 +65,6 @@ const mutations = {
         state.articlelist = res.retdata
     },
     [types.GET_ARTICLE_DETAIL](state, res) {
-// console.log(res.retdata);
         state.articledetail = res.retdata
     },
 }

@@ -114,7 +114,7 @@ export default new Router({
             ]
         },
         {
-            path: '/article/detail/:articleid',
+            path: '/article/detail/show/:articleid',
             name: 'article',
             components: {
                 "subPage":resolve=>require(["../components/articles/articleDetail"],resolve)

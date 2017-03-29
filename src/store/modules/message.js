@@ -3,104 +3,48 @@ import * as types from '../mutation-types';
 
 // 通用配置
 const state = {
-	messagelist: [],
+	messagesyslist: [],
+    messageapplist: [],
 }
 
 const actions = {
-	// updateLoadingStatus({ commit }, payload) {
- //        commit(types.COMMON_LOADING_STATUS, payload)
- //    },
- //    toggleTipsStatus({ commit }, status) {
- //        commit(types.COMMON_TOGGLE_TIPS_STATUS, status)
- //    },
-    getMessagesList({ commit }) {
-        // if(state.scroll) {
-        //     commit(types.GET_SPORTS_PAGE_NUM)
-        //     commit(types.COM_LOADING_STATUS, true),
-        //     commit(types.GET_SPORTS_SCORLL_STATUS, false)
-        api.v3_notify_list().then(res => {
-            console.log(res)
-        //             commit(types.COM_LOADING_STATUS, false),
-        //             commit(types.GET_SPORTS_SCORLL_STATUS, true)
-            commit(types.GET_MESSAGE_LIST, res)
+    get_message_sys_list({ commit }, params) {
+        api.v3_notify_list(params).then(res => {
+// console.log(res)
+            commit(types.GET_MESSAGE_SYS_LIST, res)
         })
-        // }
+    },
+    get_message_app_list({ commit }, params) {
+        api.v3_notify_list(params).then(res => {
+// console.log(res)
+            commit(types.GET_MESSAGE_APP_LIST, res)
+        })
     }
 }
 
 const getters = {
-	messages: state => state.messagelist,
+    messagesyslist: state => state.messagesyslist,
+    messageapplist: state => state.messageapplist,
 }
 
 const mutations = {
-    [types.GET_MESSAGE_LIST](state, res) {
-        // if(state.searchKey.page <= 1) {
-            // state.messages = res.retdata
-            state.messages = [{ //普通消息列表
-    "mid": 1, //消息的id 唯一标识，重要
-    "type": "official",//消息类型，先保留，后期需要
-    "group_name": "来摇吧", //如果不是个人消息，则需要填写
-    "read": true, //true；已读 false：未读
-    "msg": [{ //对话框的聊天记录 新消息 push 进
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }],
-    // "user": friends.getUserInfo('runid_xuxiang') // 此消息的用户
-},
-{
-    "mid": 2, //消息的id 唯一标识，重要
-    "type": "",//消息类型，先保留，后期需要
-    "group_name": "", //如果不是个人消息，则需要填写
-    "read": false, //true；已读 false：未读
-    "msg": [{ //对话框的聊天记录 新消息 push 进
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }],
-    // "user": friends.getUserInfo('runid_xuxiang') // 此消息的用户
-},
-{
-    "mid": 3, //消息的id 唯一标识，重要
-    "type": "",//消息类型，先保留，后期需要
-    "group_name": "", //如果不是个人消息，则需要填写
-    "read": false, //true；已读 false：未读
-    "msg": [{ //对话框的聊天记录 新消息 push 进
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }, {
-        "text": "点击这些白色框消息，唤醒消息操作菜单，点击这些白色框消息，唤醒消息操作菜单",
-        "date": "1490756400",
-        "title": "点击这些白色框消息"
-    }],
-    // "user": friends.getUserInfo('runid_xuxiang') // 此消息的用户
-},
-];
-            console.log(state.messages);
-        // } else {
-            // state.sportsList = state.sportsList.concat(res.data)
-        // }
+    [types.GET_MESSAGE_SYS_LIST](state, res) {
+        const result = {
+            type: 1,
+            group_name: '系统消息',
+            icon: 'http://img3.imgtn.bdimg.com/it/u=2059047634,2596951716&fm=214&gp=0.jpg',
+            msg: res.retdata
+        };
+        state.messagesyslist = result
+    },
+    [types.GET_MESSAGE_APP_LIST](state, res) {
+        const result = {
+            type: 2,
+            group_name: '应用消息',
+            icon: 'http://img3.imgtn.bdimg.com/it/u=2059047634,2596951716&fm=214&gp=0.jpg',
+            msg: res.retdata
+        };
+        state.messageapplist = result
     },
 }
 

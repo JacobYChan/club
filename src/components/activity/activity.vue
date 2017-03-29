@@ -2,34 +2,34 @@
     <div class="activity">
         <scroller lock-y :scrollbar-x=false>
             <div class="scroller" :style="{width:calWidth+'rem'}">
-                <template v-for="(value,key) in officialActivityList">
-                    <router-link class="officialActivity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.activityid}}" tag="div"
+                <template v-for="(value,key) in activity_official_list">
+                    <router-link class="officialActivity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
                         v-for="(item,index) in value" :key="index">
                         <img :src="item.img"></img>
-                        <p class="ellipsis">{{item.name}}</p>
-                        <i :class="{'end':item.endTime<=nowDate,'notStart':item.startTime>nowDate,'start':item.startTime<=nowDate&&nowDate<item.endTime}">{{item.startTime|filterDate(item.endTime)}}</i>
-                        <em>{{item.startTime|filterTime(item.endTime)}}</em>
-                        <span>{{item.member}}人参与</span>
+                        <p class="ellipsis">{{item.title}}</p>
+                        <i :class="{'end':item.endTime<=nowDate,'notStart':item.stime>nowDate,'start':item.stime<=nowDate&&nowDate<item.etime}">{{item.stime|filterDate(item.etime)}}</i>
+                        <em>{{item.stime|filterTime(item.etime)}}</em>
+                        <span><!-- {{item.member}} -->人参与(接口未获得)</span>
                         </router-link>
                 </template>
             </div>
         </scroller>
         <div class="activity_list">
-            <template v-for="(value,key) in activityList">
-                <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.activityid}}" tag="div"
+            <template v-for="(value,key) in activity_list">
+                <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
                     v-for="(item,index) in value" :key="index">
                     <div class="activity_img">
                         <img :src="item.img">
                     </div>
                     <div class="activity_info">
-                        <h3>{{item.name}}</h3>
-                        <p>{{item.startTime|filterTime_p(item.endTime)}}</p>
-                        <p>{{item.location}}</p>
-                        <span>{{item.type|filterType}}</span>
+                        <h3>{{item.title}}</h3>
+                        <p>{{item.stime|filterTime_p(item.etime)}}</p>
+                        <!-- <p>{{item.location}}</p> -->
+                        <span>{{item.tid|filterType}}</span>
                     </div>
                     <div class="activity_status">
-                        <span :class="{'end':item.endTime<=nowDate,'notStart':item.startTime>nowDate,'start':item.startTime<=nowDate&&nowDate<item.endTime}">{{item.startTime|filterDate(item.endTime)}}</span>
-                        <p>{{item.member.length}}人参与</p>
+                        <span :class="{'end':item.etime<=nowDate,'notStart':item.stime>nowDate,'start':item.stime<=nowDate&&nowDate<item.etime}">{{item.stime|filterDate(item.etime)}}</span>
+                        <p><!-- {{item.member.length}} -->人参与(接口未获得)</p>
                     </div>
                     </router-link>
             </template>
@@ -42,6 +42,7 @@
 
 <script>
     import { Scroller, dateFormat } from 'vux'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             Scroller,
@@ -84,75 +85,21 @@
         methods: {
 
         },
+        created() {
+            this.$store.dispatch('get_activity_list', {begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_activity_official_list', {begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')})
+        },
         computed: {
             nowDate() {
                 return Date.parse(new Date()) / 1000
             },
             calWidth() {
-                return this.$store.state.officialActivity.length * 15.6 + .5;
+                return this.$store.state.activity.activity_official_list.length * 15.6 + .5;
             },
-            // 提取官方活动开始时间和结束时间，按状态排序
-            initialOfficialList: function () {
-                var initialList = [],
-                    officialActivity = this.$store.state.officialActivity,
-                    max = officialActivity.length
-                for (var i = 0; i < max; i++) {
-                    if (initialList.indexOf(officialActivity[i].endTime) == -1) {
-                        initialList.push(officialActivity[i].endTime)
-                    }
-                }
-                initialList.sort(function (a, b) {
-                    return b - a
-                })
-                return initialList
-            },
-            // 官方活动按状态排序
-            officialActivityList() {
-                var officialActivityList = {},
-                    officialActivity = this.$store.state.officialActivity,
-                    max = officialActivity.length;
-                for (var i = 0; i < this.initialOfficialList.length; i++) {
-                    var protoTypeName = this.initialOfficialList[i]
-                    officialActivityList[i] = []
-                    for (var j = 0; j < max; j++) {
-                        if (officialActivity[j].endTime === protoTypeName) {
-                            officialActivityList[i].push(officialActivity[j])
-                        }
-                    }
-                }
-                return officialActivityList
-            },
-            // 提取个人活动开始时间和结束时间，按状态排序
-            initialList: function () {
-                var initialList = [],
-                    activity = this.$store.state.activity,
-                    max = activity.length
-                for (var i = 0; i < max; i++) {
-                    if (initialList.indexOf(activity[i].endTime) == -1) {
-                        initialList.push(activity[i].endTime)
-                    }
-                }
-                initialList.sort(function (a, b) {
-                    return b - a
-                })
-                return initialList
-            },
-            // 个人活动按状态排序
-            activityList() {
-                var activityList = {},
-                    activity = this.$store.state.activity,
-                    max = activity.length;
-                for (var i = 0; i < this.initialList.length; i++) {
-                    var protoTypeName = this.initialList[i]
-                    activityList[i] = []
-                    for (var j = 0; j < max; j++) {
-                        if (activity[j].endTime === protoTypeName) {
-                            activityList[i].push(activity[j])
-                        }
-                    }
-                }
-                return activityList
-            }
+            ...mapGetters([
+                'activity_list',
+                'activity_official_list'
+            ])
         }
     }
 

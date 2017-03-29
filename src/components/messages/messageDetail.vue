@@ -2,10 +2,10 @@
     <div class="messageDetail">
         <x-header>{{this.$route.query.name}}</x-header>
         <div class="message_item" v-for="item in msgInfo.msg">
-            <span>{{item.date|filterDate}}</span>
+            <span>{{item.time|filterDate}}</span>
             <div class="detail">
                 <h3>{{item.title}}</h3>
-                <p>{{item.text}}</p>
+                <p>{{item.content}}</p>
             </div>
         </div>
     </div>
@@ -13,6 +13,7 @@
 
 <script>
     import { XHeader, dateFormat } from 'vux'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             XHeader,
@@ -24,12 +25,16 @@
                 return dateFormat(time, 'YYYY年MM月DD日 HH时mm分');
             }
         },
+        created(){
+            this.$store.dispatch('get_message_sys_list', {type: 1, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
+            this.$store.dispatch('get_message_app_list', {type: 2, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
+        },
         computed: {
             msgInfo() {
-                for (var i in this.$store.state.messages) {
-                    if (this.$store.state.messages[i].mid == this.$route.query.mid) {
-                        return this.$store.state.messages[i]
-                    }
+                if (this.$route.query.mid == 1) {
+                    return this.$store.state.message.messagesyslist
+                } else {
+                    return this.$store.state.message.messageapplist
                 }
             }
         },

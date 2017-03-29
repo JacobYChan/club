@@ -1,17 +1,29 @@
 <template>
     <div class="messages">
         <ul class="messages_list">
-            <!-- <div v-for="msgObj in $store.state.messages" :item="msgObj" :key="msgObj.mid"></div> -->
+            <msg-item :item="messagesyslist"></msg-item>
+            <msg-item :item="messageapplist"></msg-item>
         </ul>
     </div>
 </template>
 
 <script>
     import msgItem from './message-item'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             msgItem
         },
+        created(){
+            this.$store.dispatch('get_message_sys_list', {type: 1, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
+            this.$store.dispatch('get_message_app_list', {type: 2, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
+        },
+        computed: {
+            ...mapGetters([
+                'messagesyslist',
+                'messageapplist'
+            ])
+        }
     }
 
 </script>

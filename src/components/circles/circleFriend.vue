@@ -1,10 +1,10 @@
 <template>
     <div class="circleFriend">
-        <template v-for="(value,key) in $store.getters.friendsList">
+        <template v-for="(value,key) in circles_friend_list">
             <!--点赞数排序-->
             <div class="cells" v-for="item in value">
                 <div class="head">
-                    <div class="headImg"><img :src="item.headerUrl"></div>
+                    <div class="headImg"><img :src="item.headerurl"></div>
                     <div class="headTitle ellipsis">
                         <h3>{{item.nickname}}</h3>
                         <p>{{item.time|filterDate}}</p>
@@ -21,7 +21,7 @@
                 <div class="bottom ellipsis">
                     <!--<div class="location">{{item.area| filterLoc }}</div> -->
                     <div class="zan">
-                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.zan}}</span></div>
+                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
                             <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
                         </div>
@@ -37,6 +37,7 @@
 
 <script>
     import { XImg, dateFormat } from 'vux'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             XImg,
@@ -75,6 +76,14 @@
                 }
 
             }
+        },
+        created() {
+                this.$store.dispatch('get_circles_friend_list', {begin: 0,offset: 100,isfriend: 1,uid: localStorage.getItem('loginopenid')})
+        },
+        computed: {
+            ...mapGetters([
+                'circles_friend_list'
+            ])
         },
         methods: {
             //图片加载成功和失败

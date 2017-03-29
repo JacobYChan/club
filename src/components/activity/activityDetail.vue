@@ -3,33 +3,33 @@
         <x-header>活动详情</x-header>
         <div class="activity_head">
             <div class="headImg">
-                <img :src="activityInfo.img">
+                <img :src="activity_detail.img">
             </div>
             <div class="title">
-                <h3>{{activityInfo.name}}</h3>
-                <span>{{activityInfo.type|filterType}}</span>
+                <h3>{{activity_detail.title}}</h3>
+                <span>{{activity_detail.tid|filterType}}</span>
                 <div class="creater">
-                    <img :src="activityInfo.creater.headerUrl">
-                    <em>{{activityInfo.creater.name}}</em>
+                    <!-- <img :src="activity_detail.creater.headerUrl"> -->
+                    <!-- <em>{{activity_detail.creater.name}}</em> -->
                 </div>
             </div>
         </div>
         <div class="activity_time">
             <h3>活动时间</h3>
-            <p>{{activityInfo.startTime|filterTime_p(activityInfo.endTime)}}</p>
+            <p>{{activity_detail.stime|filterTime_p(activity_detail.etime)}}</p>
         </div>
         <div class="activity_location">
             <h3>活动地点</h3>
-            <p>{{activityInfo.location}}</p>
+            <p>{{activity_detail.place}}</p>
         </div>
         <div class="activity_des">
             <h3>活动介绍</h3>
-            <p>{{activityInfo.desc}}</p>
+            <p>{{activity_detail.content}}</p>
         </div>
         <div class="activity_members">
-            <p>他们都报名了，共{{activityInfo.member.length}}人</p>
+            <!-- <p>他们都报名了，共{{activity_detail.member.length}}人</p> -->
             <div class="headImg">
-                <img :src="item" v-for="item in activityInfo.member">
+                <!-- <img :src="item" v-for="item in activity_detail.member"> -->
             </div>
         </div>
         <div class="join">
@@ -42,7 +42,7 @@
 
 <script>
     import { XHeader, dateFormat, Toast, XButton } from 'vux'
-    import activity from "../../store/activity"
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             XHeader,
@@ -55,10 +55,13 @@
                 show_success: false,
             }
         },
+        created() {
+            this.$store.dispatch('get_activity_detail', {id: this.$route.query.activityid,uid: localStorage.getItem('loginopenid')})
+        },
         computed: {
-            activityInfo() {
-                return activity.getActivityInfo(this.$route.query.activityid);
-            }
+            ...mapGetters([
+                'activity_detail',
+            ])
         },
         filters: {
             filterType: function (type) {

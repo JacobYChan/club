@@ -4,7 +4,6 @@
         <transition name="router-fade" mode="out-in">
             <router-view style="margin-top:44px;"></router-view>
         </transition>
-        
     </div>
 </template>
 
@@ -17,6 +16,13 @@
         data() {
             return {
 
+            }
+        },
+        created() {
+            if (this.$route.query.uid) {
+                // 清除
+                localStorage.removeItem('loginopenid')
+                localStorage.setItem('loginopenid', this.$route.query.uid)
             }
         }
     }

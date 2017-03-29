@@ -1,22 +1,22 @@
 <template>
     <div class="circle_detail">
-        <x-header>{{circleInfo.name}}</x-header>
+        <x-header>{{circles_detail.name}}</x-header>
         <div class="circle_head">
             <div class="headImg">
-                <img :src="circleInfo.headerUrl">
+                <img :src="circles_detail.icon">
             </div>
             <div class="title">
-                <h3>{{circleInfo.name}}</h3>
-                <p>圈子ID：{{circleInfo.circleid}}</p>
+                <h3>{{circles_detail.name}}</h3>
+                <p>圈子ID：{{circles_detail.id}}</p>
             </div>
         </div>
         <div class="circle_title">圈子动态</div>
         <div class="circle_affairs">
-            <template v-for="(value,key) in $store.getters.friendsList">
+            <template v-for="(value,key) in circles_yz_list">
                 <!--点赞数排序-->
                 <div class="cells" v-for="item in value">
                     <div class="head">
-                        <div class="headImg"><img :src="item.headerUrl"></div>
+                        <div class="headImg"><img :src="item.headerurl"></div>
                         <div class="headTitle ellipsis">
                             <h3>{{item.nickname}}</h3>
                             <p>{{item.time|filterDate}}</p>
@@ -31,9 +31,9 @@
                         </div>
                     </div>
                     <div class="bottom ellipsis">
-                        <div class="location">{{item.area| filterLoc }}</div>
+                        <!-- <div class="location">{{item.area| filterLoc }}</div> -->
                         <div class="zan">
-                            <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.zan}}</span></div>
+                            <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                             <div><i class="iconfont icon-dazhongicon04"></i>
                                 <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
                             </div>
@@ -42,7 +42,7 @@
                 </div>
             </template>
         </div>
-        <div class="circle_join" @click="show_success=true">
+        <div class="circle_join" @click="_add_circle">
             <span class="margin">加入圈子</span>
         </div>
         <toast v-model="show_success">成功加入圈子 </toast>
@@ -51,7 +51,8 @@
 
 <script>
     import { XHeader, XImg, dateFormat, Toast } from 'vux'
-    // import circles from "../../store/circles_near"
+    import { mapGetters } from 'vuex'
+    import api from '../../fetch/api'
     export default {
         components: {
             XHeader,
@@ -59,10 +60,15 @@
             dateFormat,
             Toast
         },
+        created() {
+            this.$store.dispatch('get_circles_detail', {id: this.$route.query.circleid,uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_circles_yz_list', {begin: 0,offset: 100,cid: this.$route.query.circleid,uid: localStorage.getItem('loginopenid')})
+        },
         computed: {
-            circleInfo() {
-                return circles.getCircleInfo(this.$route.query.circleid)
-            }
+            ...mapGetters([
+                'circles_detail',
+                'circles_yz_list'
+            ])
         },
         data() {
             return {
@@ -78,6 +84,20 @@
             error(src, ele, msg) {
                 const span = ele.parentNode.querySelector('span')
                 span.innerText = '加载失败。。。'
+            },
+            _add_circle() {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    cid: this.$route.query.circleid
+                }
+                api.v3_circle_join(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.show_success = true;
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
             }
         },
         filters: {

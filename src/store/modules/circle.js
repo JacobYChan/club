@@ -6,18 +6,25 @@ const state = {
 	circles_hot: [],
     circles_near: [],
     circles_recommend: [],
+    circles_friend: [],
+    circles_detail: [],
 }
 
 const actions = {
-    get_circles_yz_list({ commit }) {
-        const param = {}
+    get_circles_yz_list({ commit }, param) {
         api.v3_dynamic_list(param).then(res => {
             commit(types.GET_CIRCLES_YZ_LIST, res)
 console.log(res)
         })
     },
+    get_circles_friend_list({ commit }, param) {
+        api.v3_dynamic_list(param).then(res => {
+            commit(types.GET_CIRCLES_FRIEND_LIST, res)
+console.log(res)
+        })
+    },
     get_circles_recommend_list({ commit }) {
-        const param = {}
+        const param = {begin: 0,offset: 100,order:'nums',ordertype:'desc'}
         api.v3_circle_list(param).then(res => {
             commit(types.GET_CIRCLES_RECOMMEND_LIST, res)
 console.log(res)
@@ -25,7 +32,7 @@ console.log(res)
     },
 
     get_circles_hot_list({ commit }) {
-        const param = {}
+        const param = {begin: 0,offset: 100,order:'nums',ordertype:'desc'}
         api.v3_circle_list(param).then(res => {
             commit(types.GET_CIRCLES_HOT_LIST, res)
 console.log(res)
@@ -33,9 +40,16 @@ console.log(res)
     },
 
     get_circles_near_list({ commit }) {
-        const param = {}
+        const param = {begin: 0,offset: 100,order:'nums',ordertype:'desc'}
         api.v3_circle_list(param).then(res => {
             commit(types.GET_CIRCLES_NEAR_LIST, res)
+console.log(res)
+        })
+    },
+
+    get_circles_detail({ commit }, param) {
+        api.v3_circle_circle(param).then(res => {
+            commit(types.GET_CIRCLES_DETAIL, res)
 console.log(res)
         })
     },
@@ -166,6 +180,38 @@ const getters = {
         return hot_list
     },
 
+    circles_friend_init_list: state => {
+        var friend_init_list = [],
+            all_circles = state.circles_friend,
+            max = all_circles.length
+        for (var i = 0; i < max; i++) {
+            if (friend_init_list.indexOf(all_circles[i].time) == -1) {
+                friend_init_list.push(all_circles[i].time)
+            }
+        }
+        friend_init_list.sort(function (a, b) {
+            return b - a
+        })
+        return friend_init_list
+    },
+
+    circles_friend_list: (state, getters) => {
+        var friend_list = {},
+            all_circles = state.circles_friend,
+            max = all_circles.length;
+        for (var i = 0; i < getters.circles_friend_init_list.length; i++) {
+            var protoTypeName = getters.circles_friend_init_list[i]
+            friend_list[i] = []
+            for (var j = 0; j < max; j++) {
+                if (all_circles[j].time === protoTypeName) {
+                    friend_list[i].push(all_circles[j])
+                }
+            }
+        }
+        return friend_list
+    },
+    circles_detail: state => state.circles_detail
+
 }
 
 const mutations = {
@@ -180,6 +226,12 @@ const mutations = {
     },
     [types.GET_CIRCLES_YZ_LIST](state, res) {
         state.circles_yz = res.retdata
+    },
+    [types.GET_CIRCLES_FRIEND_LIST](state, res) {
+        state.circles_friend = res.retdata
+    },
+    [types.GET_CIRCLES_DETAIL](state, res) {
+        state.circles_detail = res.retdata
     },
 }
 

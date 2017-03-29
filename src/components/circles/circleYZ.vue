@@ -4,7 +4,7 @@
             <!--点赞数排序-->
             <div class="cells" v-for="item in value">
                 <div class="head">
-                    <div class="headImg"><img :src="item.headerUrl"></div>
+                    <div class="headImg"><img :src="item.headerurl"></div>
                     <div class="headTitle ellipsis">
                         <h3>{{item.nickname}}</h3>
                         <p>{{item.time|filterDate}}</p>
@@ -21,7 +21,7 @@
                 <div class="bottom ellipsis">
                     <!--<div class="location">{{item.area| filterLoc }}</div> -->
                     <div class="zan">
-                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.zan}}</span></div>
+                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
                             <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
                         </div>
@@ -79,9 +79,7 @@
             }
         },
         created() {
-        //     if (this.sportsList.length == 0) {
-                this.$store.dispatch('get_circles_yz_list')
-        //     }
+                this.$store.dispatch('get_circles_yz_list', {begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')})
         },
         computed: {
             ...mapGetters([
