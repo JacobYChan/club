@@ -27,13 +27,13 @@
             <p>{{activity_detail.content}}</p>
         </div>
         <div class="activity_members">
-            <!-- <p>他们都报名了，共{{activity_detail.member.length}}人</p> -->
+            <p>他们都报名了，共{{activity_detail.enroll.length}}人</p>
             <div class="headImg">
-                <!-- <img :src="item" v-for="item in activity_detail.member"> -->
+                <img :src="item" v-for="item in activity_detail.enroll">
             </div>
         </div>
         <div class="join">
-            <x-button type="primary" @click.native="show_success=true">报名</x-button>
+            <x-button type="primary" @click.native="_activity_enroll">报名</x-button>
         </div>
         <toast v-model="show_success">报名成功 </toast>
 
@@ -43,6 +43,7 @@
 <script>
     import { XHeader, dateFormat, Toast, XButton } from 'vux'
     import { mapGetters } from 'vuex'
+    import api from '../../fetch/api'
     export default {
         components: {
             XHeader,
@@ -62,6 +63,23 @@
             ...mapGetters([
                 'activity_detail',
             ])
+        },
+        methods: {
+            _activity_enroll() {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    aid: this.$route.query.activityid
+                }
+                console.log(data);
+                api.v3_activity_enroll(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.show_success = true;
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         },
         filters: {
             filterType: function (type) {

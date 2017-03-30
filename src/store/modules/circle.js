@@ -24,7 +24,7 @@ console.log(res)
         })
     },
     get_circles_recommend_list({ commit }) {
-        const param = {begin: 0,offset: 100,order:'nums',ordertype:'desc'}
+        const param = {begin: 0,offset: 100,order:'time',ordertype:'desc'}
         api.v3_circle_list(param).then(res => {
             commit(types.GET_CIRCLES_RECOMMEND_LIST, res)
 console.log(res)
@@ -40,7 +40,8 @@ console.log(res)
     },
 
     get_circles_near_list({ commit }) {
-        const param = {begin: 0,offset: 100,order:'nums',ordertype:'desc'}
+        const param = {begin: 0,offset: 100,order:localStorage.getItem('loginopenid')}
+// console.log(param);
         api.v3_circle_list(param).then(res => {
             commit(types.GET_CIRCLES_NEAR_LIST, res)
 console.log(res)

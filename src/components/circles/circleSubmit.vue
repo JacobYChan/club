@@ -2,7 +2,7 @@
     <div class="circle_submit">
         <x-header>创建我的圈子</x-header>
         <group title="圈子名称" class="circle_name">
-            <x-input placeholder="请为您的圈子起个名字" :max="20" required v-model="value_name"></x-input>
+            <x-input placeholder="请为您的圈子起个名字" :max="20" name="name" required v-model="value_name"></x-input>
             <span>最大不超过10个汉字</span>
         </group>
         <group title="说说你的圈子梦想" class="circle_dream">
@@ -13,7 +13,7 @@
             <span>提交申请后请耐心等待，审核结果我们会推送消息给您。</span>
         </group>
         <div class="create">
-            <x-button type="primary" @click.native="show_success=true">提交申请</x-button>
+            <x-button type="primary" @click.native="_circle_apply">提交申请</x-button>
         </div>
         <toast v-model="show_success">申请成功 </toast>
         <toast v-model="show_error" type="cancel">{{errorMsg}}</toast>
@@ -22,6 +22,7 @@
 
 <script>
     import { XTextarea, Group, XHeader, Toast, XInput, XButton } from 'vux'
+    import api from '../../fetch/api'
     export default {
         components: {
             XHeader,
@@ -40,7 +41,30 @@
                 value_tel: '',
                 value_des: ''
             }
-        }
+        },
+        methods: {
+            _circle_apply() {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    name: this.value_name,
+                    describtion: this.value_des,
+                    phone: this.value_tel,
+                }
+                console.log(data);
+                api.v3_circle_apply(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.show_success = true;
+                        // this.$router.replace('/home/join')
+                    } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
+        },
     }
 
 </script>

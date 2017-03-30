@@ -119,6 +119,10 @@ export default new Router({
             components: {
                 "subPage":resolve=>require(["../components/articles/articleDetail"],resolve)
             }
-        }
+        },
+        {
+            path: '/img',
+            component: resolve => require(["../components/img.vue"], resolve)
+        },
     ]
 })

@@ -89,11 +89,11 @@ export default {
    //  	// return Vue.http.post('api/v3/activity/type', params);
    //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/activity/type', params);
   	// },
-  	// //活动报名
-  	// v3_activity_enroll() {
-   //  	// return Vue.http.post('api/v3/activity/enroll', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/activity/enroll', params);
-  	// },
+
+  	// 活动报名
+  	v3_activity_enroll(params) {
+    	return fetch('/v2/api/activity/enroll', params);
+  	},
   	// 活动信息
   	v3_activity_activity(params) {
     	return fetch('/v2/api/activity/activity', params);
