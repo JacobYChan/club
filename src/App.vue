@@ -50,6 +50,23 @@
                 if (toDepth >= 5) {
                     this.leaveAnimate = "animated fadeOutRight"
                 }
+                switch (to.path.split('/')[1]) {
+                    case '':
+                        document.title = "社区圈子";
+                        return
+                    case 'home':
+                        document.title = "社区圈子";
+                        return "社区圈子"
+                    case 'activity':
+                        document.title = "社区活动";
+                        return "社区活动"
+                    case 'message':
+                        document.title = "社区消息";
+                        return "社区消息"
+                    case 'article':
+                        document.title = "社区科普";
+                        return "社区科普"
+                }
             }
         }
     }
