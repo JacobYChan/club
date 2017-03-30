@@ -19,11 +19,8 @@
                     </div>
                 </div>
                 <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
-                    <flexbox-item>
-                        <div class="flex-demo"><span>刘安:</span>{{item.content}}</div>
-                    </flexbox-item>
-                    <flexbox-item>
-                        <div class="flex-demo">2</div>
+                    <flexbox-item v-for="user in item.reply" :key="user.id">
+                        <div class="flex-demo"><span>{{user.user.name}}:</span>{{user.content}}</div>
                     </flexbox-item>
                 </flexbox>
                 <div class="bottom ellipsis">
@@ -33,7 +30,7 @@
                     <div class="zan">
                         <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
-                            <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
+                            <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                         </div>
                     </div>
                 </div>
@@ -58,16 +55,6 @@
             FlexboxItem,
         },
         filters: {
-            // filterLoc: function (val) {
-            //     return val.toString();
-            // },
-            filterComment: function (val) {
-                let arr = [];
-                for (let i in val) {
-                    arr.push(i);
-                }
-                return arr.length;
-            },
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
                 // console.log(now - val);

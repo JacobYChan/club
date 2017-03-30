@@ -9,7 +9,7 @@
                         <p class="ellipsis">{{item.title}}</p>
                         <i :class="{'end':item.endTime<=nowDate,'notStart':item.stime>nowDate,'start':item.stime<=nowDate&&nowDate<item.etime}">{{item.stime|filterDate(item.etime)}}</i>
                         <em>{{item.stime|filterTime(item.etime)}}</em>
-                        <span><!-- {{item.enroll.length}} -->人参与(接口未获得)</span>
+                        <span> {{item.nums}}人参与</span>
                         </router-link>
                 </template>
             </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="activity_status">
                         <span :class="{'end':item.etime<=nowDate,'notStart':item.stime>nowDate,'start':item.stime<=nowDate&&nowDate<item.etime}">{{item.stime|filterDate(item.etime)}}</span>
-                        <p><!-- {{item.enroll.length}} -->人参与(接口未获得)</p>
+                        <p> {{item.nums}}人参与</p>
                     </div>
                     </router-link>
             </template>

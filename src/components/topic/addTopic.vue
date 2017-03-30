@@ -8,8 +8,8 @@
         <div class="weui_uploader_bd">
             <ul class="weui_uploader_files">
             </ul>
-            <div class="weui_uploader_input_wrp" @click="show=!show">
-                <!--<input accept="image/*" type="file"> -->
+            <div class="weui_uploader_input_wrp" @click.stop="add">
+                <input class="weui_uploader_input" accept="image/*" @change="onFileChange" type="file" multiple>
             </div>
         </div>
         <!--<div class="location ellipsis">
@@ -45,12 +45,14 @@
             }
         },
         methods: {
-            take() {
-                console.log("拍照")
+            add() {
+                console.log(1);
             },
-            select() {
-                console.log("相册");
-            }
+             onFileChange: function (e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length) return;
+                this.createImage(files, e);
+            },
         },
     }
 
@@ -108,6 +110,18 @@
                     @include line;
                     @include wh(39.5px, 2px);
                 }
+                input {
+                    @include wh(100%, 100%);
+                }
+                .weui_uploader_input {
+                    position: absolute;
+                    z-index: 1;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                }
             }
         }
         // .location {
@@ -121,7 +135,7 @@
         //         @include sc(.8rem, #333);
         //     }
         // }
-        .sub{
+        .sub {
             position: fixed;
             width: 100%;
             bottom: 0;
