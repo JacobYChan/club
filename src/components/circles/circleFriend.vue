@@ -18,8 +18,18 @@
                         <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
                     </div>
                 </div>
+                <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
+                    <flexbox-item>
+                        <div class="flex-demo"><span>刘安:</span>{{item.content}}</div>
+                    </flexbox-item>
+                    <flexbox-item>
+                        <div class="flex-demo">2</div>
+                    </flexbox-item>
+                </flexbox>
                 <div class="bottom ellipsis">
-                    <!--<div class="location">{{item.area| filterLoc }}</div> -->
+                    <div class="location">
+                        <search on-submit="" on-submit="addComment" v-model="commentValue" position="absolute" top="46px" placeholder="评论"></search>
+                    </div>
                     <div class="zan">
                         <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
@@ -36,12 +46,15 @@
 </template>
 
 <script>
-    import { XImg, dateFormat } from 'vux'
+    import { XImg, dateFormat, Search, Flexbox, FlexboxItem } from 'vux'
     import { mapGetters } from 'vuex'
     export default {
         components: {
             XImg,
-            dateFormat
+            dateFormat,
+            Search,
+            Flexbox,
+            FlexboxItem
         },
         filters: {
             filterLoc: function (val) {
@@ -78,7 +91,7 @@
             }
         },
         created() {
-                this.$store.dispatch('get_circles_friend_list', {begin: 0,offset: 100,isfriend: 1,uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, isfriend: 1, uid: localStorage.getItem('loginopenid') })
         },
         computed: {
             ...mapGetters([
@@ -177,18 +190,45 @@
                     }
                 }
             }
+            .comment {
+                background-color: #EFEFF4;
+                .flex-demo {
+                    @include sc(.7rem, #333);
+                    padding: .2rem .5rem;
+                    span {
+                        color: #1CC019;
+                        margin-right: .2rem;
+                    }
+                }
+            }
             .bottom {
                 display: flex;
                 text-align: right;
-                // .location {
-                //     @include sc(.5rem, #576B95);
-                //     padding-top: .6rem;
-                //     flex: 1.5;
-                // }
+                margin-top: .5rem;
+                .location {
+                    .weui-search-bar {
+                        padding: 0;
+                        .weui-search-bar__box {
+                            padding-left: 5px;
+                        }
+                        .weui-icon-search {
+                            &:before {
+                                content: '';
+                            }
+                        }
+                    }
+                    .weui-search-bar__label {
+                        background-color: #EFEFF4;
+                        text-align: left;
+                    }
+                    .weui-search-bar__cancel-btn {
+                        font-size: .7rem;
+                    }
+                }
                 .zan {
                     margin-top: .2rem;
                     position: relative;
-                    width: 100%;
+                    flex: 1;
                     div {
                         margin-right: .8rem;
                         display: inline;
