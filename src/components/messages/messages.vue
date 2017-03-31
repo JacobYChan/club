@@ -14,7 +14,7 @@
         components: {
             msgItem
         },
-        beforeCreate(){
+        created(){
             this.$store.dispatch('get_message_sys_list', {type: 1, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
             this.$store.dispatch('get_message_app_list', {type: 2, begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')});
         },

@@ -25,7 +25,7 @@
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                        <search on-submit="" on-submit="addComment" v-model="commentValue" position="absolute" top="46px" placeholder="评论"></search>
+                        <search on-submit="addComment" v-model="commentValue" position="absolute" top="46px" placeholder="评论"></search>
                     </div>
                     <div class="zan">
                         <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
@@ -87,6 +87,9 @@
             ])
         },
         methods: {
+            addComment:function(){
+                alert(1);
+            },
             //图片加载成功和失败
             success(src, ele) {
                 const span = ele.parentNode.querySelector('span')

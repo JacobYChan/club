@@ -3,8 +3,8 @@ import * as types from '../mutation-types';
 
 // 通用配置
 const state = {
-	messagesyslist: [],
-    messageapplist: [],
+	messagesyslist: {},
+    messageapplist: {},
 }
 
 const actions = {
@@ -36,6 +36,7 @@ const mutations = {
             msg: res.retdata
         };
         state.messagesyslist = result
+        console.log(state.messagesyslist.msg.length)
     },
     [types.GET_MESSAGE_APP_LIST](state, res) {
         const result = {

@@ -26,7 +26,9 @@
 <script>
     import { Badge, dateFormat } from 'vux'
     export default {
-        props: ["item"],
+        props: {
+            item:Object
+        },
         components: {
             Badge,
             dateFormat,
