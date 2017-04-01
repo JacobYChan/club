@@ -33,6 +33,9 @@
                 "leaveAnimate": "" //页面离开动效
             }
         },
+        created() {
+            
+        },
         computed: {
             ...mapState({
                 isLoading: state => state.common.isLoading

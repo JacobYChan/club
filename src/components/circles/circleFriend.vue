@@ -2,14 +2,14 @@
     <div class="circleFriend">
         <template v-for="(value,key) in circles_friend_list">
             <!--点赞数排序-->
-            <div class="cells" v-for="item in value">
+            <div class="cells" v-for="(item,index) in value">
                 <div class="head">
                     <div class="headImg"><img :src="item.headerurl"></div>
                     <div class="headTitle ellipsis">
                         <h3>{{item.nickname}}</h3>
                         <p>{{item.time|filterDate}}</p>
                     </div>
-                    <span v-if="item.isFocus==0" class="focus" @click="">关注</span>
+                    <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                 </div>
                 <div class="conten_title">{{item.title}}</div>
                 <div class="content_img">
@@ -19,21 +19,18 @@
                     </div>
                 </div>
                 <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
-                    <flexbox-item>
-                        <div class="flex-demo"><span>刘安:</span>{{item.content}}</div>
-                    </flexbox-item>
-                    <flexbox-item>
-                        <div class="flex-demo">2</div>
+                    <flexbox-item v-for="user in item.reply" :key="user.id">
+                        <div class="flex-demo"><span>{{user.user.name}}:</span>{{user.content}}</div>
                     </flexbox-item>
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                        <search on-submit="" on-submit="addComment" v-model="commentValue" position="absolute" top="46px" placeholder="评论"></search>
+                        <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
                     </div>
                     <div class="zan">
-                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
+                    <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy" ></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
-                            <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
+                            <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                         </div>
                     </div>
                 </div>
@@ -48,6 +45,8 @@
 <script>
     import { XImg, dateFormat, Search, Flexbox, FlexboxItem } from 'vux'
     import { mapGetters } from 'vuex'
+    import api from '../../fetch/api'
+    import {count} from '../../config/mUtils'
     export default {
         components: {
             XImg,
@@ -57,19 +56,19 @@
             FlexboxItem
         },
         filters: {
-            filterLoc: function (val) {
-                return val.toString();
-            },
-            filterComment: function (val) {
-                let arr = [];
-                for (let i in val) {
-                    arr.push(i);
-                }
-                return arr.length;
-            },
+            // filterLoc: function (val) {
+            //     return val.toString();
+            // },
+            // filterComment: function (val) {
+            //     let arr = [];
+            //     for (let i in val) {
+            //         arr.push(i);
+            //     }
+            //     return arr.length;
+            // },
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
-                console.log(now - val);
+                // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
                 } else if ((now - val) < 1200 && (now - val) >= 600) {
@@ -91,14 +90,65 @@
             }
         },
         created() {
-            this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, isfriend: 1, uid: localStorage.getItem('loginopenid') })
+            
         },
         computed: {
             ...mapGetters([
                 'circles_friend_list'
-            ])
+            ]),
+
         },
         methods: {
+            _focus(focusid) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    focusid: focusid,
+                }
+                api.userinfo_focus(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            addComment(did,key) {
+                var num = count(this.circles_friend_list)
+                for(var i=0;i<num;i++){
+                    this.commentValue.push('')
+                }
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    did: did,
+                    content: this.commentValue[key],
+                }
+console.log(data);
+                api.v3_dynamic_reply(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.commentValue[key] = ""
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            _i_like(did) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    did: did,
+                }
+// console.log(data);
+                api.v3_dynamic_likes(data).then(res => {
+// console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
             //图片加载成功和失败
             success(src, ele) {
                 const span = ele.parentNode.querySelector('span')
@@ -111,6 +161,7 @@
         },
         data() {
             return {
+                commentValue: [],
                 options: {
                     getThumbBoundsFn(index) {
                         // find thumbnail element
@@ -187,6 +238,7 @@
                     padding: .1rem;
                     img {
                         width: 100%;
+                        height:auto;
                     }
                 }
             }
@@ -208,6 +260,9 @@
                 .location {
                     .weui-search-bar {
                         padding: 0;
+                        .weui-search-bar__cancel-btn {
+                            display: none;
+                        }
                         .weui-search-bar__box {
                             padding-left: 5px;
                         }
@@ -220,6 +275,7 @@
                     .weui-search-bar__label {
                         background-color: #EFEFF4;
                         text-align: left;
+                        z-index: -99999;
                     }
                     .weui-search-bar__cancel-btn {
                         font-size: .7rem;

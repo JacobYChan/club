@@ -21,7 +21,7 @@
                             <h3>{{item.nickname}}</h3>
                             <p>{{item.time|filterDate}}</p>
                         </div>
-                        <span v-if="item.isFocus==0" class="focus" @click="">关注</span>
+                        <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                     </div>
                     <div class="conten_title">{{item.title}}</div>
                     <div class="content_img">
@@ -33,9 +33,9 @@
                     <div class="bottom ellipsis">
                         <!-- <div class="location">{{item.area| filterLoc }}</div> -->
                         <div class="zan">
-                            <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
+                            <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                             <div><i class="iconfont icon-dazhongicon04"></i>
-                                <span style="top:.35rem;position:absolute;">{{item.comments|filterComment}}</span>
+                                <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                             </div>
                         </div>
                     </div>
@@ -76,6 +76,37 @@
             }
         },
         methods: {
+            _focus(focusid) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    focusid: focusid,
+                }
+                api.userinfo_focus(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_detail', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_yz_list', {begin: 0,offset: 100,cid: this.$route.query.circleid,uid: localStorage.getItem('loginopenid')})
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            _i_like(did) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    did: did,
+                }
+                console.log(data);
+                api.v3_dynamic_likes(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_detail', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
             //图片加载成功和失败
             success(src, ele) {
                 const span = ele.parentNode.querySelector('span')
@@ -101,33 +132,35 @@
             }
         },
         filters: {
-            filterLoc: function (val) {
-                return val.toString();
-            },
-            filterComment: function (val) {
-                let arr = [];
-                for (let i in val) {
-                    arr.push(i);
-                }
-                return arr.length;
-            },
+            // filterLoc: function (val) {
+            //     return val.toString();
+            // },
+            // filterComment: function (val) {
+            //     let arr = [];
+            //     for (let i in val) {
+            //         arr.push(i);
+            //     }
+            //     return arr.length;
+            // },
             filterDate: function (val) {
-                if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 60) {
+                let now = Date.parse(new Date()) / 1000;
+                // console.log(now - val);
+                if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 600) {
+                } else if ((now - val) < 1200 && (now - val) >= 600) {
                     return "5分钟前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 900) {
+                } else if ((now - val) < 6000 && (now - val) >= 1200) {
                     return "10分钟前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 5000) {
+                } else if ((now - val) < 12000 && (now - val) >= 6000) {
                     return "1小时前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 10000) {
+                } else if ((now - val * 1) < 120000 && (now - val) >= 12000) {
                     return "2小时前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 100000) {
+                } else if ((now - val * 1) < 240000 && (now - val) >= 120000) {
                     return "1天前"
-                } else if ((new Date().getTime() - new Date(val.replace(/-/, "/"))) / 1000 < 200000) {
+                } else if ((now - val * 1) && (now - val) >= 240000) {
                     return "2天前"
                 } else {
-                    return dateFormat(val, 'MM-DD HH:mm')
+                    return dateFormat(val * 1000, 'MM-DD HH:mm')
                 }
 
             }
@@ -244,6 +277,7 @@
                         padding: .1rem;
                         img {
                             width: 100%;
+                            height:auto;
                         }
                     }
                 }

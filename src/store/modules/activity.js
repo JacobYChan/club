@@ -5,9 +5,16 @@ const state = {
     activity_official_list: [],
     activity_list: [],
     activity_detail: [],
+    activity_type: [],
 }
 
 const actions = {
+    get_activity_type({ commit }, param) {
+        api.v3_activity_type(param).then(res => {
+            commit(types.GET_ACTIVITY_TYPE, res)
+console.log(res)
+        })
+    },
     get_activity_list({ commit }, param) {
         api.v3_activity_list(param).then(res => {
             commit(types.GET_ACTIVITY_LIST, res)
@@ -90,7 +97,8 @@ const getters = {
         }
         return activity_list
     },
-    activity_detail: state => state.activity_detail
+    activity_detail: state => state.activity_detail,
+    activity_type: state => state.activity_type
 }
 
 const mutations = {
@@ -102,6 +110,9 @@ const mutations = {
     },
     [types.GET_ACTIVITY_DETAIL](state, res) {
         state.activity_detail = res.retdata
+    },
+    [types.GET_ACTIVITY_TYPE](state, res) {
+        state.activity_type = res.retdata
     },
 }
 

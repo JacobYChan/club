@@ -1,7 +1,7 @@
 <template>
     <div class="joinCircle">
-        <search @result-click="resultClick" @on-change="getResult" :results="results" v-model="value" position="absolute" auto-scroll-to-top
-            top="5.2rem" @on-focus="onFocus" @on-cancel="onCancel" @on-submit="getResult(value)" placeholder="输入圈子名称找到圈子"></search>
+        <!-- <search @result-click="resultClick" @on-change="getResult" :results="results" v-model="value" position="absolute" auto-scroll-to-top
+            top="5.2rem" @on-focus="onFocus" @on-cancel="onCancel" @on-submit="getResult(value)" placeholder="输入圈子名称找到圈子"></search> -->
 
             <tab :line-width="2">
                 <tab-item :selected="this.$route.path.split('/').length==3" @on-item-click="handler('/home/join')">推荐</tab-item>

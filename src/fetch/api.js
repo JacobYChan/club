@@ -5,12 +5,11 @@ import qs from 'qs'
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 axios.defaults.baseURL = 'http://sport.jsheyun.net';
-// axios.defaults.baseURL = 'http://result.eolinker.com';
 
 // post传参序列化
 axios.interceptors.request.use((config) => {
     if (config.method  === 'post') {
-        console.log(localStorage.getItem('loginopenid'));
+console.log(localStorage.getItem('loginopenid'));
         config.data = qs.stringify(config.data);
     }
     return config;
@@ -47,48 +46,49 @@ export function fetch(url, params) {
 }
 
 export default {
-	// 动态列表
+	// 关注好友
+    userinfo_focus(params) {
+        return fetch('/api/userinfo/focus', params)
+    },
+
+    // 动态列表
 	v3_dynamic_list(params) {
         return fetch('/v2/api/dynamic/list', params)
   	},
 
+  	// 发表动态
+  	v3_dynamic_update(params) {
+    	return fetch('/v2/api/dynamic/update', params);
+  	},
 
-  	// //发表动态
-  	// v3_dynamic_update() {
-   //  	// return Vue.http.post('api/v3/dynamic/update', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/dynamic/update', params);
-  	// },
-  	// //动态的评论列表
-  	// v3_dynamic_dynamic() {
-   //  	// return Vue.http.post('api/v3/dynamic/dynamic', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/dynamic/dynamic', params);
-  	// },
-  	// //评论动态
-  	// v3_dynamic_reply() {
-   //  	// return Vue.http.post('api/v3/dynamic/reply', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/dynamic/reply', params);
-  	// },
-  	// //动态点赞
-  	// v3_dynamic_likes() {
-   //  	// return Vue.http.post('api/v3/dynamic/likes', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/dynamic/likes', params);
-  	// },
+  	// 动态的评论列表
+  	v3_dynamic_dynamic(params) {
+    	return fetch('/v2/api/dynamic/dynamic', params);
+  	},
 
+  	// 评论动态
+  	v3_dynamic_reply(params) {
+    	return fetch('/v2/api/dynamic/reply', params);
+  	},
 
-  	// //创建活动
-  	// v3_activity_update() {
-   //  	// return Vue.http.post('api/v3/activity/update', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/activity/update', params);
-  	// },
+  	// 动态点赞
+  	v3_dynamic_likes(params) {
+    	return fetch('/v2/api/dynamic/likes', params);
+  	},
+
+  	// 创建活动
+  	v3_activity_update(params) {
+    	return fetch('/v2/api/activity/update', params);
+  	},
+
   	// 活动列表
   	v3_activity_list(params) {
     	return fetch('/v2/api/activity/list', params);
   	},
-  	// //活动类型
-  	// v3_activity_type() {
-   //  	// return Vue.http.post('api/v3/activity/type', params);
-   //  	return Vue.http.get('http://result.eolinker.com/yBHid5idb11256adfce650a70debc28b6b2a62f3812cc05?uri=/api/v3/activity/type', params);
-  	// },
+  	// 活动类型
+  	v3_activity_type(params) {
+    	return fetch('/v2/api/activity/type', params);
+  	},
 
   	// 活动报名
   	v3_activity_enroll(params) {

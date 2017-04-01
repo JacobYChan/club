@@ -2,8 +2,8 @@
     <div class="addTopic">
         <x-header>编写话题</x-header>
         <group>
-            <x-input placeholder="标题(可选)"></x-input>
-            <x-textarea :max="200" name="description" placeholder="请填写有意思的内容"></x-textarea>
+            <x-input placeholder="标题(可选)" v-model="value_title"></x-input>
+            <x-textarea :max="200" name="description" placeholder="请填写有意思的内容" v-model="value_content"></x-textarea>
         </group>
         <div class="weui_uploader_bd">
             <ul class="weui_uploader_files">
@@ -26,7 +26,7 @@
             <span>{{address}}</span>
         </div> -->
         <div class="sub">
-            <x-button type="primary">完成</x-button>
+            <x-button type="primary" @click.native="_add_topic">完成</x-button>
         </div>
 
     </div>
@@ -34,6 +34,7 @@
 
 <script>
     import { XButton, XHeader, XTextarea, Group, XInput, Actionsheet } from 'vux'
+    import api from '../../fetch/api'
     export default {
         components: {
             XHeader,
@@ -50,14 +51,33 @@
                 isPhoto: true,
                 previewImg: '',
                 isPreview: false,
-
-                // address: "海尔空调专卖店（文汇西路店）"
+                value_title: '',
+                value_content: '',
             }
         },
         watch: {
             imgUrls: 'toggleAddPic'
         },
         methods: {
+            _add_topic() {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    title: this.value_title,
+                    content: this.value_content,
+                    cid: 15,
+                    img: JSON.stringify(this.imgUrls),
+                }
+console.log(data);
+                api.v3_dynamic_update(data).then(res => {
+                    if (res.retcode == 200) {
+console.log(res);
+                        this.$router.replace('/home')
+                    } else {
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
             toggleAddPic: function () {
                 let vm = this;
                 if (vm.imgUrls.length >= 1) {
@@ -66,10 +86,24 @@
                     vm.isPhoto = true;
                 }
             },
-            createImage: function (file, e) {
-                for (var i = 0; i < file.length; i++) {
-                    this.imgUrls.push(window.URL.createObjectURL(file[i]));
+            createImage: function (file) {
+                if (typeof FileReader === 'undefined') {
+                    alert('您的手机浏览器不支持图片上传，请升级您的软件');
+                    return false;
                 }
+                var image = new Image();
+                var vm = this;
+                var leng = file.length;
+                for (var i = 0; i < leng; i++) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file[i]);
+                    reader.onload = function (e) {
+                        vm.imgUrls.push(e.target.result);
+                    };
+                }
+                // for (var i = 0; i < file.length; i++) {
+                //     this.imgUrls.push(window.URL.createObjectURL(file[i]));
+                // }
             },
             delImage: function (index) {
                 this.imgUrls.splice(index, 1);
@@ -100,7 +134,7 @@
             onFileChange: function (e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
-                this.createImage(files, e);
+                this.createImage(files);
             },
         },
     }

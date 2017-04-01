@@ -1,3 +1,18 @@
+export const count = obj => {
+    var t = typeof obj;
+    if (t == 'string') {
+        return obj.length;
+    } else if (t == 'object') {
+        var n = 0;
+        for (var i in obj) {
+            n++;
+        }
+        return n;
+    }
+    return false;
+}
+
+
 /**
  * 存储localStorage
  */

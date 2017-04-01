@@ -4,7 +4,7 @@
         <div class="head">
             <h3>{{articledetail.title}}</h3>
             <p>{{articledetail.time|filterTime}}</p>
-            <span>内容摘要：{{articledetail.describtion}}</span>
+            <!-- <span>内容摘要：{{articledetail.describtion}}</span> -->
         </div>
         <div v-html="articledetail.content" class="content"></div>
     </div>
@@ -22,7 +22,7 @@
             filterTime: function (value) {
                 let time = value * 1000;
                 return dateFormat(time, 'YYYY-MM-DD HH:mm');
-            }
+            },
         },
         created(){
             this.$store.dispatch('get_article_detail', this.$route.params.articleid)
@@ -76,6 +76,10 @@
             background-color: #fff;
             padding: 0rem .5rem .5rem .5rem;
             font-size: .7rem;
+            img{
+                width:100%;
+                height: 10rem;
+            }
         }
     }
 </style>

@@ -19,6 +19,7 @@
             }
         },
         created() {
+
             if (this.$route.query.uid) {
                 // 清除
                 localStorage.removeItem('loginopenid')

@@ -9,13 +9,13 @@
                         <h3>{{item.nickname}}</h3>
                         <p>{{item.time|filterDate}}</p>
                     </div>
-                    <span v-if="item.isFocus==0" class="focus" @click="">关注</span>
+                    <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                 </div>
                 <div class="conten_title">{{item.title}}</div>
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
                         <span style="font-size:.6rem">图片加载中...</span>
-                        <x-img :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
+                        <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
                     </div>
                 </div>
                 <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
@@ -25,10 +25,10 @@
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                        <search on-submit="addComment" v-model="commentValue" position="absolute" top="46px" placeholder="评论"></search>
+                        <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
                     </div>
                     <div class="zan">
-                        <div><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
+                        <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy" ></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
                             <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                         </div>
@@ -45,6 +45,8 @@
 <script>
     import { XImg, dateFormat, Search, Flexbox, FlexboxItem } from 'vux'
     import { mapGetters } from 'vuex'
+    import api from '../../fetch/api'
+    import {count} from '../../config/mUtils'
 
     export default {
         components: {
@@ -55,6 +57,16 @@
             FlexboxItem,
         },
         filters: {
+            // filterLoc: function (val) {
+            //     return val.toString();
+            // },
+            // filterComment: function (val) {
+            //     let arr = [];
+            //     for (let i in val) {
+            //         arr.push(i);
+            //     }
+            //     return arr.length;
+            // },
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
                 // console.log(now - val);
@@ -79,7 +91,7 @@
             }
         },
         created() {
-            this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+            
         },
         computed: {
             ...mapGetters([
@@ -87,8 +99,55 @@
             ])
         },
         methods: {
-            addComment:function(){
-                alert(1);
+            _focus(focusid) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    focusid: focusid,
+                }
+                api.userinfo_focus(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+           addComment(did,key) {
+                var num = count(this.circles_yz_list)
+                for(var i=0;i<num;i++){
+                    this.commentValue.push('')
+                }
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    did: did,
+                    content: this.commentValue[key],
+                }
+console.log(data);
+                api.v3_dynamic_reply(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.commentValue[key] = ""
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            _i_like(did) {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    did: did,
+                }
+                console.log(data);
+                api.v3_dynamic_likes(data).then(res => {
+                    console.log(res)
+                    if (res.retcode == 200) {
+                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
             },
             //图片加载成功和失败
             success(src, ele) {
@@ -102,7 +161,7 @@
         },
         data() {
             return {
-                commentValue: '',
+                commentValue: [],
                 options: {
                     getThumbBoundsFn(index) {
                         // find thumbnail element
@@ -179,6 +238,7 @@
                     padding: .1rem;
                     img {
                         width: 100%;
+                        height:auto;
                     }
                 }
             }
@@ -200,6 +260,9 @@
                 .location {
                     .weui-search-bar {
                         padding: 0;
+                        .weui-search-bar__cancel-btn {
+                            display: none;
+                        }
                         .weui-search-bar__box {
                             padding-left: 5px;
                         }
@@ -212,6 +275,7 @@
                     .weui-search-bar__label {
                         background-color: #EFEFF4;
                         text-align: left;
+                        z-index: -99999;
                     }
                     .weui-search-bar__cancel-btn {
                         font-size: .7rem;

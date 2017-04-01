@@ -7,7 +7,7 @@
             </div>
             <div class="title">
                 <h3>{{activity_detail.title}}</h3>
-                <span>{{activity_detail.tid|filterType}}</span>
+                <span v-if="activity_detail.uid != 0">{{activity_detail.tid|filterType(activity_type)}}</span>
                 <div class="creater">
                     <!-- <img :src="activity_detail.creater.headerUrl"> -->
                     <!-- <em>{{activity_detail.creater.name}}</em> -->
@@ -29,7 +29,7 @@
         <div class="activity_members">
             <p>他们都报名了，共{{activity_detail.enroll.length}}人</p>
             <div class="headImg">
-                <img :src="item" v-for="item in activity_detail.enroll">
+                <img :src="item.headimg" v-for="item in activity_detail.enroll">
             </div>
         </div>
         <div class="join">
@@ -58,10 +58,12 @@
         },
         created() {
             this.$store.dispatch('get_activity_detail', {id: this.$route.query.activityid,uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
         },
         computed: {
             ...mapGetters([
                 'activity_detail',
+                'activity_type'
             ])
         },
         methods: {
@@ -82,13 +84,14 @@
             }
         },
         filters: {
-            filterType: function (type) {
-                switch (parseInt(type)) {
-                    case 1: return "徒步"; break;
-                    case 2: return "跑步"; break;
-                    case 3: return "骑行"; break;
-                    case 4: return "其他"; break;
-                }
+            filterType: function (type, val) {
+                var d
+                val.forEach(value => {
+                    if (parseInt(value.id) == parseInt(type)) {
+                        d = value.name;
+                    }
+                })
+                return d;
             },
             filterTime_p: function (starttime, endtime) {
                 let startFormat = starttime * 1000;
@@ -136,6 +139,7 @@
                 @include wh(3rem, 3rem);
                 img {
                     width: 100%;
+                    height: 100%;
                 }
             }
             .title {

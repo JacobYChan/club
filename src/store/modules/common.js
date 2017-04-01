@@ -1,9 +1,7 @@
 import * as types from '../mutation-types';
 
-// 通用配置
 const state = {
 	isLoading: false,
-	tipsStatus: false, //控制评论右上角菜单的显示(true)/隐藏(false)
 }
 
 const actions = {

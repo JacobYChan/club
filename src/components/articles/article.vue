@@ -23,7 +23,7 @@
             Scroller
         },
         created(){
-            this.$store.dispatch('get_article_category_list')
+            
         },
         data() {
             return {

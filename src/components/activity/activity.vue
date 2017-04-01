@@ -1,7 +1,7 @@
 <template>
     <div class="activity">
-        <scroller lock-y :scrollbar-x=false>
-            <div class="scroller" :style="{width:calWidth+'rem'}">
+        <scroller lock-y :scrollbar-x=false ref="scroller">
+            <div class="scroller" :style="{width:calWidth+'rem'}" >
                 <template v-for="(value,key) in activity_official_list">
                     <router-link class="officialActivity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
                         v-for="(item,index) in value" :key="index">
@@ -14,7 +14,7 @@
                 </template>
             </div>
         </scroller>
-        <div class="activity_list">
+        <div class="activity_list" v-if="calLength!==0">
             <template v-for="(value,key) in activity_list">
                 <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
                     v-for="(item,index) in value" :key="index">
@@ -25,7 +25,7 @@
                         <h3>{{item.title}}</h3>
                         <p>{{item.stime|filterTime_p(item.etime)}}</p>
                         <!-- <p>{{item.location}}</p> -->
-                        <span>{{item.tid|filterType}}</span>
+                        <span>{{item.tid|filterType(activity_type)}}</span>
                     </div>
                     <div class="activity_status">
                         <span :class="{'end':item.etime<=nowDate,'notStart':item.stime>nowDate,'start':item.stime<=nowDate&&nowDate<item.etime}">{{item.stime|filterDate(item.etime)}}</span>
@@ -73,34 +73,42 @@
                 var end = dateFormat(endFormat, 'MM.DD HH:mm');
                 return `${start}-${end}`;
             },
-            filterType: function (type) {
-                switch (parseInt(type)) {
-                    case 1: return "徒步"; break;
-                    case 2: return "跑步"; break;
-                    case 3: return "骑行"; break;
-                    case 4: return "其他"; break;
-                }
+            filterType: function (type, val) {
+                var d
+                val.forEach(value => {
+                    if (parseInt(value.id) == parseInt(type)) {
+                        d = value.name;
+                    }
+                })
+                return d;
             }
         },
         methods: {
 
         },
-        created() {
-            this.$store.dispatch('get_activity_list', {begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')})
-            this.$store.dispatch('get_activity_official_list', {begin: 0,offset: 100,uid: localStorage.getItem('loginopenid')})
+        beforeCreate() {
+            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
         },
         computed: {
+            ...mapGetters([
+                'activity_list',
+                'activity_official_list',
+                'activity_type'
+            ]),
             nowDate() {
                 return Date.parse(new Date()) / 1000
+            },
+            calLength() {
+                var n = 0;
+                for (var i in this.activity_list) {
+                    n++;
+                }
+                return n
             },
             calWidth() {
                 return this.$store.state.activity.activity_official_list.length * 15.6 + .5;
             },
-            ...mapGetters([
-                'activity_list',
-                'activity_official_list'
-            ])
-        }
+        },
     }
 
 </script>
@@ -177,6 +185,7 @@
                     @include wh(2rem, 2rem);
                     img {
                         width: 100%;
+                        height: 100%;
                     }
                 }
                 .activity_info {

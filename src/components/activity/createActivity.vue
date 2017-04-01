@@ -2,27 +2,24 @@
     <div class="create_activity">
         <x-header>创建活动</x-header>
         <group>
-            <x-input title="活动名称" placeholder="填写活动名称" required></x-input>
+            <x-input title="活动名称" placeholder="填写活动名称" v-model="value_title" required></x-input>
         </group>
         <div class="type">
             <div class="type_title">
                 <label>活动类型</label>
             </div>
-            <checker default-item-class="activity_type" selected-item-class="activity_type-selected">
-                <checker-item :value="2">跑步</checker-item>
-                <checker-item :value="1">徒步</checker-item>
-                <checker-item :value="3">骑行</checker-item>
-                <checker-item :value="4">其他</checker-item>
+            <checker default-item-class="activity_type" v-model="value_tid" selected-item-class="activity_type-selected">
+                <checker-item v-for="item in activity_type" :value="item.id">{{item.name}}</checker-item>
             </checker>
         </div>
         <group title="活动介绍" class="activity_detail">
-            <x-textarea :max="200" :rows="4" name="detail" v-model="infoValue" placeholder="请填写活动介绍" :show-counter="false"></x-textarea>
+            <x-textarea :max="200" :rows="4" name="detail" placeholder="请填写活动介绍" :show-counter="false" v-model="value_content"></x-textarea>
         </group>
         <group title="活动时间" class="activity_time">
-            <datetime v-model="startTime" placeholder="请选择开始时间" :min-year=2000 :max-year=2016 format="YYYY-MM-DD HH:mm" title="开始时间"
+            <datetime v-model="startTime" placeholder="请选择开始时间" :min-year=2017 :max-year=2050 format="YYYY-MM-DD HH:mm" title="开始时间"
                 year-row="{value}年" month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成"
                 cancel-text="取消"></datetime>
-                <datetime v-model="endTime" placeholder="请选择结束时间" :min-year=2000 :max-year=2016 format="YYYY-MM-DD HH:mm" title="结束时间" year-row="{value}年"
+                <datetime v-model="endTime" placeholder="请选择结束时间" :min-year=2017 :max-year=2050 format="YYYY-MM-DD HH:mm" title="结束时间" year-row="{value}年"
                     month-row="{value}月" day-row="{value}日" hour-row="{value}点" minute-row="{value}分" confirm-text="完成" cancel-text="取消"></datetime>
         </group>
         <div class="activity_location">
@@ -34,18 +31,34 @@
             </group>
             <div class="weui_uploader_bd">
                 <div class="activity_cover">活动封面</div>
-                <div class="weui_uploader_input_wrp" @click="show=!show"></div>
+                <div class="weui_uploader_bd">
+                    <ul class="weui_uploader_files">
+                        <li class="list-li clear" v-for="(iu, index) in imgUrls">
+                            <a class="list-link" @click='previewImage(iu)'>
+                                <img :src="iu">
+                            </a>
+                            <span class="list-img-close" @click='delImage(index)'>X</span>
+                        </li>
+                    </ul>
+                    <div class="weui_uploader_input_wrp" v-show="imgUrls.length==0">
+                        <input class="weui_uploader_input" accept="image/jpeg,image/jpg,image/png" @change="onFileChange" type="file">
+                    </div>
+                </div>
+            </div>
+            <div class="add-preview" v-show="isPreview" @click="closePreview">
+                <img :src="previewImg">
             </div>
         </div>
         <div class="create">
-            <x-button type="primary" @click.native="$router.push('')">开始创建</x-button>
+            <x-button type="primary" @click.native="_create_activity">开始创建</x-button>
         </div>
-        <actionsheet v-model="show" :menus="menus" @on-click-menu-take="take" @on-click-menu-select="select" show-cancel></actionsheet>
     </div>
 </template>
 
 <script>
     import { XHeader, Group, dateFormat, Toast, XButton, XInput, Checker, CheckerItem, XTextarea, Datetime, Actionsheet } from 'vux'
+    import api from '../../fetch/api'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             XHeader,
@@ -62,26 +75,114 @@
         },
         data() {
             return {
-                infoValue: '',//活动介绍
+                value_title: '',
+                value_content: '',//活动介绍
                 startTime: '',
                 endTime: '',
                 memberNum: 0,//报名人数
                 area: '',
                 show: false,
-                menus: {
-                    take: '拍照',
-                    select: '从相册选择'
-                },
+                imgUrls: [],
+                isPhoto: true,
+                previewImg: '',
+                isPreview: false,
+                value_tid: 0,
             }
         },
+        computed: {
+            ...mapGetters([
+                'activity_type'
+            ])
+        },
+        created() {
+            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
+        },
         methods: {
-            take() {
-                console.log("拍照")
+            _create_activity() {
+                let data = {
+                    uid: localStorage.getItem('loginopenid'),
+                    userid: localStorage.getItem('loginopenid'),
+                    title: this.value_title,
+                    content: this.value_content,
+                    stime: this.startTime,
+                    etime: this.endTime,
+                    limit: this.memberNum,
+                    tid: this.value_tid,
+                    place: this.area,
+                    cid: 15,
+                    img: JSON.stringify(this.imgUrls),
+                }
+console.log(data);
+                api.v3_activity_update(data).then(res => {
+                    console.log(res);
+                    if (res.retcode == 200) {
+                        this.$router.replace('/activity')
+                    } else {
+
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
             },
-            select() {
-                console.log("相册");
-            }
-        }
+            toggleAddPic: function () {
+                let vm = this;
+                if (vm.imgUrls.length >= 1) {
+                    vm.isPhoto = false;
+                } else {
+                    vm.isPhoto = true;
+                }
+            },
+            createImage: function (file, e) {
+                if (typeof FileReader === 'undefined') {
+                    alert('您的手机浏览器不支持图片上传，请升级您的软件');
+                    return false;
+                }
+                var image = new Image();
+                var vm = this;
+                var leng = file.length;
+                for (var i = 0; i < leng; i++) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file[i]);
+                    reader.onload = function (e) {
+                        vm.imgUrls.push(e.target.result);
+                    };
+                }
+                // for (var i = 0; i < file.length; i++) {
+                //     this.imgUrls.push(window.URL.createObjectURL(file[i]));
+                // }
+            },
+            delImage: function (index) {
+                this.imgUrls.splice(index, 1);
+            },
+            previewImage: function (url) {
+                let vm = this;
+                vm.isPreview = true;
+                vm.previewImg = url;
+            },
+            closePreview: function () {
+                let vm = this;
+                vm.isPreview = false;
+                vm.previewImg = "";
+            },
+            saveImage: function () {
+                let vm = this;
+                let urlArr = [],
+                    imgUrls = this.imgUrls;
+                for (let i = 0; i < imgUrls.length; i++) {
+                    if (imgUrls.indexOf('file') == -1) {
+                        urlArr.push(imgUrls.split(',')[1]);
+                    } else {
+                        urlArr.push(imgUrls);
+                    }
+                }
+                //数据传输操作
+            },
+            onFileChange: function (e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length) return;
+                this.createImage(files, e);
+            },
+        },
     }
 
 </script>
@@ -234,11 +335,35 @@
                     @include sc(.7rem, #000);
                     margin-top: 10px;
                 }
+                .weui_uploader_files {
+                    .list-li {
+                        @include wh(3rem, 3rem);
+                        margin: .3rem;
+                        display: inline-block;
+                        position: relative;
+                        top: 1rem;
+                        .list-img-close {
+                            position: absolute;
+                            right: -.4rem;
+                            top: -.5rem;
+                            color: #666;
+                            border: 1px solid #666;
+                            border-radius: 50%;
+                            width: .8rem;
+                            height: .8rem;
+                            text-align: center;
+                            font-size: .7rem;
+                        }
+                        a img {
+                            @include wh(3rem, 3rem)
+                        }
+                    }
+                }
                 .weui_uploader_input_wrp {
                     position: absolute;
                     width: 1rem;
                     height: 1rem;
-                    right: 2rem;
+                    right: -8rem;
                     bottom: .7rem;
                     &:before {
                         content: " ";
@@ -262,7 +387,28 @@
                         width: 20px;
                         height: 2px;
                     }
+                    .weui_uploader_input {
+                        position: absolute;
+                        z-index: 1;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0;
+                    }
                 }
+            }
+        }
+        .add-preview {
+            background-color: #333;
+            position: fixed;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            img {
+                @include center width: 95%;
             }
         }
         .create {
