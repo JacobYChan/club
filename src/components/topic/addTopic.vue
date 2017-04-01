@@ -7,10 +7,19 @@
         </group>
         <div class="weui_uploader_bd">
             <ul class="weui_uploader_files">
+                <li class="list-li clear" v-for="(iu, index) in imgUrls">
+                    <a class="list-link" @click='previewImage(iu)'>
+                        <img :src="iu">
+                    </a>
+                    <span class="list-img-close" @click='delImage(index)'>X</span>
+                </li>
             </ul>
-            <div class="weui_uploader_input_wrp" @click.stop="add">
-                <input class="weui_uploader_input" accept="image/*" @change="onFileChange" type="file" multiple>
+            <div class="weui_uploader_input_wrp">
+                <input class="weui_uploader_input" accept="image/jpeg,image/jpg,image/png" @change="onFileChange" type="file" multiple>
             </div>
+        </div>
+        <div class="add-preview" v-show="isPreview" @click="closePreview">
+            <img :src="previewImg">
         </div>
         <!--<div class="location ellipsis">
             <i class="iconfont icon-10"></i>
@@ -19,7 +28,7 @@
         <div class="sub">
             <x-button type="primary">完成</x-button>
         </div>
-        <actionsheet v-model="show" :menus="menus" @on-click-menu-take="take" @on-click-menu-select="select" show-cancel></actionsheet>
+
     </div>
 </template>
 
@@ -37,18 +46,58 @@
         data() {
             return {
                 show: false,
-                menus: {
-                    take: '拍照',
-                    select: '从相册选择'
-                },
-                address: "海尔空调专卖店（文汇西路店）"
+                imgUrls: [],
+                isPhoto: true,
+                previewImg: '',
+                isPreview: false,
+
+                // address: "海尔空调专卖店（文汇西路店）"
             }
         },
+        watch: {
+            imgUrls: 'toggleAddPic'
+        },
         methods: {
-            add() {
-                console.log(1);
+            toggleAddPic: function () {
+                let vm = this;
+                if (vm.imgUrls.length >= 1) {
+                    vm.isPhoto = false;
+                } else {
+                    vm.isPhoto = true;
+                }
             },
-             onFileChange: function (e) {
+            createImage: function (file, e) {
+                for (var i = 0; i < file.length; i++) {
+                    this.imgUrls.push(window.URL.createObjectURL(file[i]));
+                }
+            },
+            delImage: function (index) {
+                this.imgUrls.splice(index, 1);
+            },
+            previewImage: function (url) {
+                let vm = this;
+                vm.isPreview = true;
+                vm.previewImg = url;
+            },
+            closePreview: function () {
+                let vm = this;
+                vm.isPreview = false;
+                vm.previewImg = "";
+            },
+            saveImage: function () {
+                let vm = this;
+                let urlArr = [],
+                    imgUrls = this.imgUrls;
+                for (let i = 0; i < imgUrls.length; i++) {
+                    if (imgUrls.indexOf('file') == -1) {
+                        urlArr.push(imgUrls.split(',')[1]);
+                    } else {
+                        urlArr.push(imgUrls);
+                    }
+                }
+                //数据传输操作
+            },
+            onFileChange: function (e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
                 this.createImage(files, e);
@@ -122,6 +171,41 @@
                     height: 100%;
                     opacity: 0;
                 }
+            }
+            .weui_uploader_files {
+                .list-li {
+                    @include wh(4rem, 4rem);
+                    margin: .3rem;
+                    display: inline-block;
+                    position: relative;
+                    .list-img-close {
+                        position: absolute;
+                        right: -.4rem;
+                        top: -.5rem;
+                        color: #666;
+                        border: 1px solid #666;
+                        border-radius: 50%;
+                        width: .8rem;
+                        height: .8rem;
+                        text-align: center;
+                        font-size: .7rem;
+                    }
+                    a img {
+                        @include wh(4rem, 4rem)
+                    }
+                }
+            }
+        }
+        .add-preview {
+            background-color: #333;
+            position: fixed;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            img {
+                @include center width: 95%;
             }
         }
         // .location {
