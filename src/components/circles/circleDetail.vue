@@ -12,9 +12,8 @@
         </div>
         <div class="circle_title">圈子动态</div>
         <div class="circle_affairs">
-            <template v-for="(value,key) in circles_yz_list">
                 <!--点赞数排序-->
-                <div class="cells" v-for="item in value">
+                <div class="cells" v-for="(item,key) in circles_detail_list">
                     <div class="head">
                         <div class="headImg"><img :src="item.headerurl"></div>
                         <div class="headTitle ellipsis">
@@ -22,6 +21,7 @@
                             <p>{{item.time|filterDate}}</p>
                         </div>
                         <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
+                        <span v-else class="focus">已关注</span>
                     </div>
                     <div class="conten_title">{{item.title}}</div>
                     <div class="content_img">
@@ -47,7 +47,6 @@
                         </div>
                     </div>
                 </div>
-            </template>
         </div>
         <div class="circle_join" @click="_add_circle" v-if="!circles_detail.is_in">
             <span class="margin">加入圈子</span>
@@ -74,12 +73,12 @@
         },
         created() {
             this.$store.dispatch('get_circles_detail', { id: this.$route.query.circleid, uid: localStorage.getItem('loginopenid') })
-            this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, cid: this.$route.query.circleid, uid: localStorage.getItem('loginopenid') })
+            this.$store.dispatch('get_circles_detail_list', { begin: 0, offset: 100, cid: this.$route.query.circleid, uid: localStorage.getItem('loginopenid') })
         },
         computed: {
             ...mapGetters([
                 'circles_detail',
-                'circles_yz_list'
+                'circles_detail_list'
             ])
         },
         data() {
@@ -100,8 +99,13 @@
                 api.userinfo_focus(data).then(res => {
                     console.log(res)
                     if (res.retcode == 200) {
+                        this.show_success = true;
+                        this.successMsg = "关注成功"
                         this.$store.dispatch('get_circles_detail', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
-                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, cid: this.$route.query.circleid, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_detail_list', { begin: 0, offset: 100, cid: this.$route.query.circleid, uid: localStorage.getItem('loginopenid') })
+                    } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
                     console.log(error)
@@ -123,7 +127,7 @@
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "评论成功"
-                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_detail_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
                         this.commentValue[key] = ""
                     } else {
                         this.show_error = true;
@@ -144,7 +148,7 @@
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "点赞成功"
-                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_detail_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
                         this.$store.dispatch('get_circles_detail', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
                     } else {
                         this.show_error = true;
@@ -200,7 +204,10 @@
                 // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
-                } else if ((now - val) < 1200 && (now - val) >= 600) {
+                } else if ((now - val) < 60 && (now - val) >= 0) {
+                    return "刚刚"
+                }
+                else if ((now - val) < 1200 && (now - val) >= 600) {
                     return "5分钟前"
                 } else if ((now - val) < 6000 && (now - val) >= 1200) {
                     return "10分钟前"

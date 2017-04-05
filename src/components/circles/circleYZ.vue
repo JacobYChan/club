@@ -10,6 +10,7 @@
                         <p>{{item.time|filterDate}}</p>
                     </div>
                     <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
+                    <span v-else class="focus">已关注</span>
                 </div>
                 <div class="conten_title">{{item.title}}<br>{{item.content}}</div>
                 <div class="content_img">
@@ -75,7 +76,10 @@
                 // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
-                } else if ((now - val) < 1200 && (now - val) >= 600) {
+                } else if ((now - val) < 60 && (now - val) >= 0) {
+                    return "刚刚"
+                }
+                else if ((now - val) < 1200 && (now - val) >= 600) {
                     return "5分钟前"
                 } else if ((now - val) < 6000 && (now - val) >= 1200) {
                     return "10分钟前"
@@ -110,7 +114,12 @@
                 api.userinfo_focus(data).then(res => {
                     console.log(res)
                     if (res.retcode == 200) {
-                        this.$store.dispatch('circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.show_success = true;
+                        this.successMsg = "关注成功"
+                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
                     console.log(error)

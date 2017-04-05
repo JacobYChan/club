@@ -8,9 +8,17 @@ const state = {
     circles_recommend: [],
     circles_friend: [],
     circles_detail: [],
+    circles_detail_list: [],
 }
 
 const actions = {
+    get_circles_detail_list({ commit }, param) {
+        api.v3_dynamic_list(param).then(res => {
+            commit(types.GET_CIRCLES_DETAIL_LIST, res)
+            console.log(res)
+console.log('+++++++++++++++++++++')            
+        })
+    },
     get_circles_yz_list({ commit }, param) {
         api.v3_dynamic_list(param).then(res => {
             commit(types.GET_CIRCLES_YZ_LIST, res)
@@ -211,11 +219,14 @@ const getters = {
         }
         return friend_list
     },
-    circles_detail: state => state.circles_detail
-
+    circles_detail: state => state.circles_detail,
+    circles_detail_list: state => state.circles_detail_list
 }
 
 const mutations = {
+    [types.GET_CIRCLES_DETAIL_LIST](state, res) {
+        state.circles_detail_list = res.retdata
+    },
     [types.GET_CIRCLES_RECOMMEND_LIST](state, res) {
         state.circles_recommend = res.retdata
     },
