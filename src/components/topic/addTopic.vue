@@ -25,16 +25,31 @@
             <i class="iconfont icon-10"></i>
             <span>{{address}}</span>
         </div> -->
+        <group>
+            <cell :title="title" :value="selectedOption" is-link @click.native="showPopup=true"></cell>
+        </group>
+        <popup v-model="showPopup">
+            <div class="options">
+                <p>你想发布话题到哪个圈子？</p>
+                <template v-for="(value,key) in circles_near_list">
+                    <cell :title="item.name" @click.native="confirmOption(item.name)" v-for="item in value">
+                        <img slot="icon" style="display:block;margin-right:5px;" :src="item.icon">
+                    </cell>
+                </template>
+            </div>
+        </popup>
         <div class="sub">
             <x-button type="primary" @click.native="_add_topic">完成</x-button>
         </div>
-
+        <toast v-model="show_success">发表成功 </toast>
+        <toast type="cancel" v-model="show_error"> {{errorMsg}} </toast>
     </div>
 </template>
 
 <script>
-    import { XButton, XHeader, XTextarea, Group, XInput, Actionsheet } from 'vux'
+    import { XButton, XHeader, XTextarea, Group, XInput, Actionsheet, Checker, CheckerItem, Popup, Cell, Toast } from 'vux'
     import api from '../../fetch/api'
+    import { mapGetters } from 'vuex'
     export default {
         components: {
             XHeader,
@@ -42,7 +57,12 @@
             Group,
             XInput,
             Actionsheet,
-            XButton
+            XButton,
+            Checker,
+            CheckerItem,
+            Cell,
+            Popup,
+            Toast
         },
         data() {
             return {
@@ -53,12 +73,32 @@
                 isPreview: false,
                 value_title: '',
                 value_content: '',
+                showPopup: false,
+                title: '发表在：',
+                selectedOption: '',
+                show_success: false,
+                show_error: false,
+                errorMsg: ''
             }
         },
         watch: {
             imgUrls: 'toggleAddPic'
         },
+        created() {
+            //     if (this.sportsList.length == 0) {
+            this.$store.dispatch('get_circles_near_list')
+            //     }
+        },
+        computed: {
+            ...mapGetters([
+                'circles_near_list'
+            ])
+        },
         methods: {
+            confirmOption(name) {
+                this.showPopup = false;
+                this.selectedOption = name;
+            },
             _add_topic() {
                 let data = {
                     uid: localStorage.getItem('loginopenid'),
@@ -67,12 +107,17 @@
                     cid: 15,
                     img: JSON.stringify(this.imgUrls),
                 }
-console.log(data);
+                console.log(data);
                 api.v3_dynamic_update(data).then(res => {
+                    console.log(res);
                     if (res.retcode == 200) {
-console.log(res);
-                        this.$router.replace('/home')
+                        this.show_success = true;
+                        setTimeout(() => {
+                            this.$router.replace('/home')
+                        }, 2000)
                     } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
                     console.log(error)
@@ -98,7 +143,13 @@ console.log(res);
                     var reader = new FileReader();
                     reader.readAsDataURL(file[i]);
                     reader.onload = function (e) {
-                        vm.imgUrls.push(e.target.result);
+                        if (vm.imgUrls.length < 3) {
+                            vm.imgUrls.push(e.target.result);
+                        }
+                        else {
+                            vm.show_error = true;
+                            vm.errorMsg = "最多上传3张图片";
+                        }
                     };
                 }
                 // for (var i = 0; i < file.length; i++) {
@@ -118,19 +169,19 @@ console.log(res);
                 vm.isPreview = false;
                 vm.previewImg = "";
             },
-            saveImage: function () {
-                let vm = this;
-                let urlArr = [],
-                    imgUrls = this.imgUrls;
-                for (let i = 0; i < imgUrls.length; i++) {
-                    if (imgUrls.indexOf('file') == -1) {
-                        urlArr.push(imgUrls.split(',')[1]);
-                    } else {
-                        urlArr.push(imgUrls);
-                    }
-                }
-                //数据传输操作
-            },
+            // saveImage: function () {
+            //     let vm = this;
+            //     let urlArr = [],
+            //         imgUrls = this.imgUrls;
+            //     for (let i = 0; i < imgUrls.length; i++) {
+            //         if (imgUrls.indexOf('file') == -1) {
+            //             urlArr.push(imgUrls.split(',')[1]);
+            //         } else {
+            //             urlArr.push(imgUrls);
+            //         }
+            //     }
+            //     //数据传输操作
+            // },
             onFileChange: function (e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
@@ -252,6 +303,51 @@ console.log(res);
         //     span {
         //         @include sc(.8rem, #333);
         //     }
+        // }
+        .vux-popup-dialog {
+            @include center;
+            background-color: #fff;
+            width: 90%;
+            border-radius: .2rem;
+            overflow: scroll;
+            .options {
+                padding: .2rem;
+                p {
+                    color: #1AAD19 !important;
+                    font-size: .9rem;
+                    padding: .5rem !important;
+                }
+            }
+            .weui-cell {
+                border-bottom: 1px solid #eee;
+            }
+            .weui-cell__hd {
+                img {
+                    @include wh(2rem, 2rem);
+                }
+            }
+            .vux-cell-bd {
+                p {
+                    font-size: .7rem;
+                    color: #333 !important;
+                }
+            }
+        }
+        // .demo4-item {
+        //     background-color: #ddd;
+        //     color: #222;
+        //     font-size: 14px;
+        //     padding: 5px 10px;
+        //     margin-right: 10px;
+        //     line-height: 18px;
+        //     border-radius: 15px;
+        // }
+        // .demo4-item-selected {
+        //     background-color: #FF3B3B;
+        //     color: #fff;
+        // }
+        // .demo4-item-disabled {
+        //     color: #999;
         // }
         .sub {
             position: fixed;

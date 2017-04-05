@@ -11,7 +11,7 @@
                     </div>
                     <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                 </div>
-                <div class="conten_title">{{item.title}}</div>
+                <div class="conten_title">{{item.title}}<br>{{item.content}}</div>
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
                         <span style="font-size:.6rem">图片加载中...</span>
@@ -28,7 +28,7 @@
                         <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
                     </div>
                     <div class="zan">
-                        <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy" ></i><span>{{item.likes}}</span></div>
+                        <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
                             <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                         </div>
@@ -39,14 +39,16 @@
         <div class="addNew" @click="$router.push('home/circle/topic/addTopic')">
             <i class="iconfont icon-zhaoxiangji"></i>
         </div>
+        <toast v-model="show_success">{{successMsg}} </toast>
+        <toast type="cancel" v-model="show_error"> {{errorMsg}} </toast>
     </div>
 </template>
 
 <script>
-    import { XImg, dateFormat, Search, Flexbox, FlexboxItem } from 'vux'
+    import { XImg, dateFormat, Search, Flexbox, FlexboxItem, Toast } from 'vux'
     import { mapGetters } from 'vuex'
     import api from '../../fetch/api'
-    import {count} from '../../config/mUtils'
+    import { count } from '../../config/mUtils'
 
     export default {
         components: {
@@ -55,6 +57,7 @@
             Search,
             Flexbox,
             FlexboxItem,
+            Toast
         },
         filters: {
             // filterLoc: function (val) {
@@ -91,7 +94,7 @@
             }
         },
         created() {
-            
+
         },
         computed: {
             ...mapGetters([
@@ -113,9 +116,9 @@
                     console.log(error)
                 })
             },
-           addComment(did,key) {
+            addComment(did, key) {
                 var num = count(this.circles_yz_list)
-                for(var i=0;i<num;i++){
+                for (var i = 0; i < num; i++) {
                     this.commentValue.push('')
                 }
                 let data = {
@@ -123,12 +126,17 @@
                     did: did,
                     content: this.commentValue[key],
                 }
-console.log(data);
+                console.log(data);
                 api.v3_dynamic_reply(data).then(res => {
                     console.log(res)
                     if (res.retcode == 200) {
+                        this.show_success = true;
+                        this.successMsg = "评论成功"
                         this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
                         this.commentValue[key] = ""
+                    } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
                     console.log(error)
@@ -143,7 +151,12 @@ console.log(data);
                 api.v3_dynamic_likes(data).then(res => {
                     console.log(res)
                     if (res.retcode == 200) {
+                        this.show_success = true;
+                        this.successMsg = "点赞成功"
                         this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                    } else {
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
                     console.log(error)
@@ -161,6 +174,10 @@ console.log(data);
         },
         data() {
             return {
+                successMsg: '',
+                show_success: false,
+                show_error: false,
+                errorMsg: '',
                 commentValue: [],
                 options: {
                     getThumbBoundsFn(index) {
@@ -238,7 +255,7 @@ console.log(data);
                     padding: .1rem;
                     img {
                         width: 100%;
-                        height:auto;
+                        height: auto;
                     }
                 }
             }
@@ -246,8 +263,8 @@ console.log(data);
                 background-color: #EFEFF4;
                 .flex-demo {
                     @include sc(.7rem, #333);
-                    padding:.2rem .5rem;
-                    span{
+                    padding: .2rem .5rem;
+                    span {
                         color: #1CC019;
                         margin-right: .2rem;
                     }

@@ -36,9 +36,9 @@
         width: 100%;
         background-color:#fff;
         .vux-tab{
-            height: 2rem;
+            height: 2.5rem;
             .vux-tab-item{
-                line-height: 2rem;
+                line-height: 2.5rem;
             }
         }
     }

@@ -95,7 +95,7 @@
             ])
         },
         created() {
-            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
         },
         methods: {
             _create_activity() {
@@ -112,7 +112,7 @@
                     cid: 15,
                     img: JSON.stringify(this.imgUrls),
                 }
-console.log(data);
+                console.log(data);
                 api.v3_activity_update(data).then(res => {
                     console.log(res);
                     if (res.retcode == 200) {
@@ -223,6 +223,7 @@ console.log(data);
                 }
                 .weui-cell__bd {
                     margin-top: -.12rem;
+                    
                     input {
                         font-size: .7rem;
                         height: 100%;
@@ -330,6 +331,7 @@ console.log(data);
             .weui_uploader_bd {
                 position: relative;
                 display: flex;
+                background-color: #fff;
                 .activity_cover {
                     padding: 15px;
                     @include sc(.7rem, #000);

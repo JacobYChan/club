@@ -10,7 +10,7 @@
         </div>
         <!--其他店内页集合 有过渡效果-->
         <transition name="custom-classes-transition" :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
-            <router-view name="subPage" class="sub-page"></router-view>
+            <router-view name="subPage"></router-view>
         </transition>
         <loading v-model="isLoading"></loading>
     </div>

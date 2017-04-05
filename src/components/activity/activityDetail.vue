@@ -33,10 +33,11 @@
             </div>
         </div>
         <div class="join">
-            <x-button type="primary" @click.native="_activity_enroll">报名</x-button>
+            <x-button type="primary" @click.native="_activity_enroll" v-if="!activity_detail.is_in">报名</x-button>
+            <x-button type="primary" disabled v-else>已成功报名</x-button>
         </div>
         <toast v-model="show_success">报名成功 </toast>
-
+        <toast type="cancel" v-model="show_error">{{errorMsg}} </toast>
     </div>
 </template>
 
@@ -54,11 +55,13 @@
         data() {
             return {
                 show_success: false,
+                errorMsg: '',
+                show_error: false
             }
         },
         created() {
-            this.$store.dispatch('get_activity_detail', {id: this.$route.query.activityid,uid: localStorage.getItem('loginopenid')})
-            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_activity_detail', { id: this.$route.query.activityid, uid: localStorage.getItem('loginopenid') })
+            this.$store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
         },
         computed: {
             ...mapGetters([
@@ -77,8 +80,13 @@
                     console.log(res)
                     if (res.retcode == 200) {
                         this.show_success = true;
+                    }else{
+                        this.show_error = true;
+                        this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
+                    this.errorMsg = error;
+                    this.show_error = true;
                     console.log(error)
                 })
             }
@@ -193,14 +201,13 @@
             @extend .activity_time;
         }
         .activity_members {
-            margin:  0 .5rem;
+            margin: 0 .5rem;
             padding: .5rem 0;
             @include sc(.7rem, #000);
-
             .headImg {
                 img {
                     display: inline;
-                    @include wh(2rem,2rem);
+                    @include wh(2rem, 2rem);
                     border-radius: 50%;
                     margin: .5rem .3rem;
                 }
