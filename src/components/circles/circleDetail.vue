@@ -12,41 +12,46 @@
         </div>
         <div class="circle_title">圈子动态</div>
         <div class="circle_affairs">
-                <!--点赞数排序-->
-                <div class="cells" v-for="(item,key) in circles_detail_list">
-                    <div class="head">
-                        <div class="headImg"><img :src="item.headerurl"></div>
-                        <div class="headTitle ellipsis">
-                            <h3>{{item.nickname}}</h3>
-                            <p>{{item.time|filterDate}}</p>
-                        </div>
-                        <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
-                        <span v-else class="focus">已关注</span>
+            <!--点赞数排序-->
+            <div class="cells" v-for="(item,key) in circles_detail_list">
+                <div class="head">
+                    <div class="headImg"><img :src="item.headerurl"></div>
+                    <div class="headTitle ellipsis">
+                        <h3>{{item.nickname}}</h3>
+                        <p>{{item.time|filterDate}}</p>
                     </div>
-                    <div class="conten_title">{{item.title}}</div>
-                    <div class="content_img">
-                        <div v-for="(src,index) in item.img" style="text-align:center;">
-                            <span style="font-size:.6rem">图片加载中...</span>
-                            <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
-                        </div>
+                    <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
+                    <span v-else class="focus">已关注</span>
+                </div>
+                <div class="conten_title">{{item.title}}</div>
+                <div class="content_img">
+                    <div v-for="(src,index) in item.img" style="text-align:center;">
+                        <span style="font-size:.6rem">图片加载中...</span>
+                        <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
                     </div>
-                    <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
-                        <flexbox-item v-for="user in item.reply" :key="user.id">
-                            <div class="flex-demo"><span>{{user.user.name}}:</span>{{user.content}}</div>
-                        </flexbox-item>
-                    </flexbox>
-                    <div class="bottom ellipsis">
+                </div>
+                <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
+                    <flexbox-item v-for="user in item.reply" :key="user.id">
+                        <div class="flex-demo"><span>{{user.user.name}}:</span>{{user.content}}</div>
+                    </flexbox-item>
+                </flexbox>
+                <div class="bottom ellipsis">
+                    <div class="location">
                         <div class="location">
-                            <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
+                            <form class="subForm" onsubmit="return false">
+                                <input type="text" v-model="commentValue[key]" placeholder="评论" class="weui-search-bar__input">
+                                <input type="submit" value="提交" class="subBtn" @click="addComment(item.id,key)">
+                            </form>
                         </div>
-                        <div class="zan">
-                            <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
-                            <div><i class="iconfont icon-dazhongicon04"></i>
-                                <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
-                            </div>
+                    </div>
+                    <div class="zan">
+                        <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
+                        <div><i class="iconfont icon-dazhongicon04"></i>
+                            <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="circle_join" @click="_add_circle" v-if="!circles_detail.is_in">
             <span class="margin">加入圈子</span>
@@ -357,27 +362,23 @@
                     text-align: right;
                     margin-top: .5rem;
                     .location {
-                        .weui-search-bar {
-                            padding: 0;
-                            .weui-search-bar__cancel-btn {
-                                display: none;
+                        .subForm {
+                            border-radius: .2rem;
+                            width: 90%;
+                            .weui-search-bar__input {
+                                width: 100%;
+                                border: 0;
+                                font-size: .7rem;
+                                box-sizing: content-box;
+                                background-color: #eee;
+                                padding: .25rem 0;
                             }
-                            .weui-search-bar__box {
-                                padding-left: 5px;
+                            .subBtn {
+                                padding: .3rem .2rem;
+                                border-radius: .2rem;
+                                background-color: #eee;
+                                margin-left: -.2rem;
                             }
-                            .weui-icon-search {
-                                &:before {
-                                    content: '';
-                                }
-                            }
-                        }
-                        .weui-search-bar__label {
-                            background-color: #EFEFF4;
-                            text-align: left;
-                            z-index: -99999;
-                        }
-                        .weui-search-bar__cancel-btn {
-                            font-size: .7rem;
                         }
                     }
                     .zan {

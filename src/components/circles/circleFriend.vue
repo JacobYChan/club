@@ -26,7 +26,10 @@
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                        <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
+                         <form class="subForm" onsubmit="return false">
+                            <input type="text" v-model="commentValue[key]" placeholder="评论" class="weui-search-bar__input">
+                            <input type="submit" value="提交" class="subBtn" @click="addComment(item.id,key)">
+                        </form>
                     </div>
                     <div class="zan">
                         <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
@@ -75,7 +78,7 @@
                 // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
-                }else if((now - val) < 60 && (now - val) >= 0){
+                } else if ((now - val) < 60 && (now - val) >= 0) {
                     return "刚刚"
                 } else if ((now - val) < 1200 && (now - val) >= 600) {
                     return "5分钟前"
@@ -116,7 +119,7 @@
                         this.show_success = true;
                         this.successMsg = "关注成功"
                         this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
-                    }else {
+                    } else {
                         this.show_error = true;
                         this.errorMsg = res.errmsg;
                     }
@@ -283,27 +286,23 @@
                 text-align: right;
                 margin-top: .5rem;
                 .location {
-                    .weui-search-bar {
-                        padding: 0;
-                        .weui-search-bar__cancel-btn {
-                            display: none;
+                    .subForm {
+                        border-radius: .2rem;
+                        width: 90%;
+                        .weui-search-bar__input {
+                            width: 100%;
+                            border: 0;
+                            font-size: .7rem;
+                            box-sizing: content-box;
+                            background-color: #eee;
+                            padding: .25rem 0;
                         }
-                        .weui-search-bar__box {
-                            padding-left: 5px;
+                        .subBtn {
+                            padding: .3rem .2rem;
+                            border-radius: .2rem;
+                            background-color: #eee;
+                            margin-left: -.2rem;
                         }
-                        .weui-icon-search {
-                            &:before {
-                                content: '';
-                            }
-                        }
-                    }
-                    .weui-search-bar__label {
-                        background-color: #EFEFF4;
-                        text-align: left;
-                        z-index: -99999;
-                    }
-                    .weui-search-bar__cancel-btn {
-                        font-size: .7rem;
                     }
                 }
                 .zan {

@@ -26,12 +26,16 @@
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                        <search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search>
+                        <form class="subForm" onsubmit="return false">
+                            <input type="text" v-model="commentValue[key]" placeholder="评论" class="weui-search-bar__input">
+                            <input type="submit" value="提交" class="subBtn" @click="addComment(item.id,key)">
+                        </form>
+                        <!--<search @on-submit="addComment(item.id,key)" :autoFixed="false" v-model="commentValue[key]" position="absolute" placeholder="评论"></search> -->
                     </div>
                     <div class="zan">
                         <div @click="_i_like(item.id)"><i class="iconfont icon-dianzan-copy"></i><span>{{item.likes}}</span></div>
                         <div><i class="iconfont icon-dazhongicon04"></i>
-                            <span style="top:.35rem;position:absolute;">{{item.comments}}</span>
+                            <span>{{item.comments}}</span>
                         </div>
                     </div>
                 </div>
@@ -143,6 +147,7 @@
                         this.successMsg = "评论成功"
                         this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
                         this.commentValue[key] = ""
+
                     } else {
                         this.show_error = true;
                         this.errorMsg = res.errmsg;
@@ -284,42 +289,61 @@
                 text-align: right;
                 margin-top: .5rem;
                 .location {
-                    .weui-search-bar {
-                        padding: 0;
-                        .weui-search-bar__cancel-btn {
-                            display: none;
+                    .subForm {
+                        border-radius: .2rem;
+                        width: 90%;
+                        .weui-search-bar__input {
+                            width: 100%;
+                            border: 0;
+                            font-size: .7rem;
+                            box-sizing: content-box;
+                            background-color: #eee;
+                            padding: .25rem 0;
                         }
-                        .weui-search-bar__box {
-                            padding-left: 5px;
-                        }
-                        .weui-icon-search {
-                            &:before {
-                                content: '';
-                            }
+                        .subBtn {
+                            padding: .3rem .2rem;
+                            border-radius: .2rem;
+                            background-color: #eee;
+                            margin-left: -.2rem;
                         }
                     }
-                    .weui-search-bar__label {
-                        background-color: #EFEFF4;
-                        text-align: left;
-                        z-index: -99999;
-                    }
-                    .weui-search-bar__cancel-btn {
-                        font-size: .7rem;
-                    }
+                    // .weui-search-bar {
+                    //     padding: 0;
+                    //     .weui-search-bar__cancel-btn {
+                    //         display: none;
+                    //     }
+                    //     .weui-search-bar__box {
+                    //         padding-left: 5px;
+                    //     }
+                    //     .weui-icon-search {
+                    //         &:before {
+                    //             content: '';
+                    //         }
+                    //     }
+                    // }
+                    // .weui-search-bar__label {
+                    //     background-color: #EFEFF4;
+                    //     text-align: left;
+                    //     z-index: -99999;
+                    // }
+                    // .weui-search-bar__cancel-btn {
+                    //     font-size: .7rem;
+                    // }
                 }
                 .zan {
                     margin-top: .2rem;
                     position: relative;
                     flex: 1;
+                    text-align: right;
                     div {
-                        margin-right: .8rem;
-                        display: inline;
+                        margin-right: .4rem;
+                        display: inline-flex;
                         i {
                             @include sc(.8rem, #576B95);
                             margin-right: .2rem;
                         }
                         span {
-                            @include sc(.5rem, #576B95);
+                            @include sc(.7rem, #576B95);
                             font-weight: normal;
                         }
                     }

@@ -1,7 +1,7 @@
 <template>
     <div class="activity">
         <scroller lock-y :scrollbar-x=false ref="scroller">
-            <div class="scroller" :style="{width:calWidth+'rem'}" >
+            <div class="scroller" :style="{width:calWidth+'rem'}">
                 <template v-for="(value,key) in activity_official_list">
                     <router-link class="officialActivity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
                         v-for="(item,index) in value" :key="index">
@@ -19,8 +19,8 @@
         </div>
         <div class="activity_list" v-if="calLength!==0">
             <template v-for="(value,key) in activity_list">
-                <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
-                    v-for="(item,index) in value" :key="index">
+                <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div" v-for="(item,index) in value"
+                    :key="index">
                     <div class="activity_img">
                         <img :src="item.img">
                     </div>
@@ -90,10 +90,10 @@
 
         },
         beforeCreate() {
-            this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
+            this.$store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
         },
         computed: {
-            activityUrl(){
+            activityUrl() {
                 return `http://sport.jsheyun.net/home/activity?uid=${localStorage.getItem('loginopenid')}`
             },
             ...mapGetters([
@@ -178,10 +178,10 @@
                 }
             }
         }
-        .private_activity{
-            @include wh(15rem,9rem);
+        .private_activity {
+            @include wh(15rem, 9rem);
             margin: 1rem auto;
-            img{
+            img {
                 width: 100%;
             }
         }
@@ -250,6 +250,7 @@
             position: fixed;
             right: 2rem;
             bottom: 1rem;
+            background-color: #fff;
             i {
                 @include sc(2.5rem, #1bc114);
             }
