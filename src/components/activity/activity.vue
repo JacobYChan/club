@@ -87,12 +87,6 @@
                 return d;
             }
         },
-        methods: {
-
-        },
-        beforeCreate() {
-            this.$store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
-        },
         computed: {
             activityUrl() {
                 return `http://sport.jsheyun.net/home/activity?uid=${localStorage.getItem('loginopenid')}`
