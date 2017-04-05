@@ -134,13 +134,13 @@
                 margin-left: .5rem;
                 float: left;
                 text-align: left;
-                line-height: 1.5;
+                line-height: 1.2;
                 border: 1px solid #c91642;
                 padding-bottom: .2rem;
                 border-radius: .3rem;
                 img {
                     width: 100%;
-                    height: 5rem;
+                    height: 6rem;
                     border-radius: .2rem;
                 }
                 p {

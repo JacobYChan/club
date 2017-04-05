@@ -32,7 +32,7 @@ const mutations = {
         const result = {
             type: 1,
             group_name: '系统消息',
-            icon: 'http://img3.imgtn.bdimg.com/it/u=2059047634,2596951716&fm=214&gp=0.jpg',
+            icon: 'http://sport.jsheyun.net/uploads/system.png',
             msg: res.retdata
         };
         state.messagesyslist = result
@@ -42,7 +42,7 @@ const mutations = {
         const result = {
             type: 2,
             group_name: '应用消息',
-            icon: 'http://img3.imgtn.bdimg.com/it/u=2059047634,2596951716&fm=214&gp=0.jpg',
+            icon: 'http://sport.jsheyun.net/uploads/apply.png',
             msg: res.retdata
         };
         state.messageapplist = result
