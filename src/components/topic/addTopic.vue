@@ -32,7 +32,7 @@
             <div class="options">
                 <p>你想发布话题到哪个圈子？</p>
                 <template v-for="(value,key) in circles_near_list">
-                    <cell :title="item.name" @click.native="confirmOption(item.name)" v-for="item in value">
+                    <cell :title="item.name" @click.native="confirmOption(item.name,item.id)" v-for="item in value">
                         <img slot="icon" style="display:block;margin-right:5px;" :src="item.icon">
                     </cell>
                 </template>
@@ -78,7 +78,8 @@
                 selectedOption: '',
                 show_success: false,
                 show_error: false,
-                errorMsg: ''
+                errorMsg: '',
+                id: 0
             }
         },
         watch: {
@@ -95,16 +96,17 @@
             ])
         },
         methods: {
-            confirmOption(name) {
+            confirmOption(name,id) {
                 this.showPopup = false;
                 this.selectedOption = name;
+                this.id=id
             },
             _add_topic() {
                 let data = {
                     uid: localStorage.getItem('loginopenid'),
                     title: this.value_title,
                     content: this.value_content,
-                    cid: 15,
+                    cid: this.id,
                     img: JSON.stringify(this.imgUrls),
                 }
                 console.log(data);

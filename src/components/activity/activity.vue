@@ -14,6 +14,9 @@
                 </template>
             </div>
         </scroller>
+        <div class="private_activity">
+            <a :href="activityUrl"><img src="../../common/images/xingsheng.jpg"></a>
+        </div>
         <div class="activity_list" v-if="calLength!==0">
             <template v-for="(value,key) in activity_list">
                 <router-link class="activity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
@@ -90,6 +93,9 @@
             this.$store.dispatch('get_activity_type', {uid: localStorage.getItem('loginopenid')})
         },
         computed: {
+            activityUrl(){
+                return `http://sport.jsheyun.net/home/activity?uid=${localStorage.getItem('loginopenid')}`
+            },
             ...mapGetters([
                 'activity_list',
                 'activity_official_list',
@@ -170,6 +176,13 @@
                 &:last-child {
                     margin-right: .5rem;
                 }
+            }
+        }
+        .private_activity{
+            @include wh(15rem,9rem);
+            margin: 1rem auto;
+            img{
+                width: 100%;
             }
         }
         .activity_list {
