@@ -28,7 +28,8 @@ router.beforeEach(function (to, from, next) {
 
     store.dispatch('get_article_category_list')
     store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, isfriend: 1, uid: localStorage.getItem('loginopenid') })
-	store.dispatch('updateLoadingStatus', { isLoading: true })
+    store.dispatch('updateLoadingStatus', { isLoading: true })
+    store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
     next()
 })
 

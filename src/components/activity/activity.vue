@@ -38,6 +38,7 @@
             </template>
         </div>
         <router-link tag="div" to="activity/find/create/activity" class="create_activity">
+            <div></div>
             <i class="iconfont icon-iconfontxinzeng"></i>
         </router-link>
     </div>
@@ -250,9 +251,19 @@
             position: fixed;
             right: 2rem;
             bottom: 1rem;
-            background-color: #fff;
+            border-radius: 50%;
+            div {
+                background-color: #fff;
+                @include wh(1.3rem, 1.3rem);
+                position: absolute;
+                right: .65rem;
+                top: .9rem;
+                z-index: 2;
+            }
             i {
                 @include sc(2.5rem, #1bc114);
+                z-index: 10;
+                position: relative;
             }
         }
     }
