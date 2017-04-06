@@ -23,7 +23,7 @@
                     <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                     <span v-else class="focus">已关注</span>
                 </div>
-                <div class="conten_title">{{item.title}}</div>
+                <div class="conten_title">{{item.title}}<br>{{item.content}}</div>
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
                         <span style="font-size:.6rem">图片加载中...</span>
