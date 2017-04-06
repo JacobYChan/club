@@ -65,30 +65,26 @@
             Toast
         },
         filters: {
-            
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
-                if ((now - val) < 600 && (now - val) >= 60) {
-                    return "1分钟前"
-                } else if ((now - val) < 60 && (now - val) >= 0) {
+                let time = now - val;
+                if (time < 0){
+                    return '';
+                }else if(time<30){
                     return "刚刚"
-                }
-                else if ((now - val) < 1200 && (now - val) >= 600) {
-                    return "5分钟前"
-                } else if ((now - val) < 6000 && (now - val) >= 1200) {
-                    return "10分钟前"
-                } else if ((now - val) < 12000 && (now - val) >= 6000) {
-                    return "1小时前"
-                } else if ((now - val * 1) < 120000 && (now - val) >= 12000) {
-                    return "2小时前"
-                } else if ((now - val * 1) < 240000 && (now - val) >= 120000) {
-                    return "1天前"
-                } else if ((now - val * 1) && (now - val) >= 240000) {
-                    return "2天前"
+                }else if(time< 60) {
+                    return parseInt(time)+"秒前"
+                } else if ((time / 60)<60) {
+                    parseInt((time / 60)) + '分钟前'
+                }else if ((time / 3600) < 24) {
+                    return parseInt(time / 3600) + '小时前'
+                } else if ((time / 86400) < 31) {
+                    return parseInt(time / 86400) + '天前'
+                } else if ((time / 2592000) < 12) {
+                    return parseInt(time / 2592000) + '月前'
                 } else {
-                    return dateFormat(val * 1000, 'MM-DD HH:mm')
+                    return parseInt(time / 31536000) + '年前'
                 }
-
             }
         },
         created() {
