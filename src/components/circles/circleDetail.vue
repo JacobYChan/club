@@ -102,7 +102,6 @@
                     focusid: focusid,
                 }
                 api.userinfo_focus(data).then(res => {
-                    console.log(res)
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "关注成功"
@@ -113,7 +112,6 @@
                         this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             },
             addComment(did, key) {
@@ -126,9 +124,7 @@
                     did: did,
                     content: this.commentValue[key],
                 }
-                console.log(data);
                 api.v3_dynamic_reply(data).then(res => {
-                    console.log(res)
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "评论成功"
@@ -139,7 +135,6 @@
                         this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             },
             _i_like(did) {
@@ -147,9 +142,8 @@
                     uid: localStorage.getItem('loginopenid'),
                     did: did,
                 }
-                console.log(data);
                 api.v3_dynamic_likes(data).then(res => {
-                    console.log(res)
+                    
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "点赞成功"
@@ -160,7 +154,6 @@
                         this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             },
             //图片加载成功和失败
@@ -178,7 +171,6 @@
                     cid: this.$route.query.circleid
                 }
                 api.v3_circle_join(data).then(res => {
-                    console.log(res)
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "加入成功"
@@ -189,7 +181,6 @@
                 }).catch(error => {
                     this.errorMsg = error;
                     this.show_error = true;
-                    console.log(error)
                 })
             }
         },
@@ -206,7 +197,6 @@
             // },
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
-                // console.log(now - val);
                 if ((now - val) < 600 && (now - val) >= 60) {
                     return "1分钟前"
                 } else if ((now - val) < 60 && (now - val) >= 0) {

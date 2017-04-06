@@ -10,13 +10,11 @@ const state = {
 const actions = {
     get_message_sys_list({ commit }, params) {
         api.v3_notify_list(params).then(res => {
-// console.log(res)
             commit(types.GET_MESSAGE_SYS_LIST, res)
         })
     },
     get_message_app_list({ commit }, params) {
         api.v3_notify_list(params).then(res => {
-// console.log(res)
             commit(types.GET_MESSAGE_APP_LIST, res)
         })
     }
@@ -36,7 +34,6 @@ const mutations = {
             msg: res.retdata
         };
         state.messagesyslist = result
-        console.log(state.messagesyslist.msg.length)
     },
     [types.GET_MESSAGE_APP_LIST](state, res) {
         const result = {

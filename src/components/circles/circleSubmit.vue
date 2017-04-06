@@ -50,9 +50,8 @@
                     describtion: this.value_des,
                     phone: this.value_tel,
                 }
-                console.log(data);
                 api.v3_circle_apply(data).then(res => {
-                    console.log(res)
+                    
                     if (res.retcode == 200) {
                         this.show_success = true;
                         // this.$router.replace('/home/join')
@@ -61,7 +60,6 @@
                         this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             }
         },

@@ -11,19 +11,19 @@ const actions = {
     get_article_category_list({ commit }) {
         api.v3_article_getcategory().then(res => {
             commit(types.GET_ARTICLE_CATEGORY_LIST, res)
-// console.log(res)
+// 
         })
     },
     get_article_list({ commit }, id) {
         api.v3_article_list(id).then(res => {
             commit(types.GET_ARTICLE_LIST, res)
-// console.log(res)
+// 
         })
     },
     get_article_detail({ commit }, id) {
         api.v3_article_article(id).then(res => {
             commit(types.GET_ARTICLE_DETAIL, res)
-// console.log(res)
+// 
         })
     },
 }

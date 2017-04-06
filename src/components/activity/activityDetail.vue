@@ -75,9 +75,8 @@
                     uid: localStorage.getItem('loginopenid'),
                     aid: this.$route.query.activityid
                 }
-                console.log(data);
+                
                 api.v3_activity_enroll(data).then(res => {
-                    console.log(res)
                     if (res.retcode == 200) {
                         this.show_success = true;
                     }else{
@@ -87,7 +86,6 @@
                 }).catch(error => {
                     this.errorMsg = error;
                     this.show_error = true;
-                    console.log(error)
                 })
             }
         },

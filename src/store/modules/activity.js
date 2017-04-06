@@ -12,25 +12,25 @@ const actions = {
     get_activity_type({ commit }, param) {
         api.v3_activity_type(param).then(res => {
             commit(types.GET_ACTIVITY_TYPE, res)
-console.log(res)
+
         })
     },
     get_activity_list({ commit }, param) {
         api.v3_activity_list(param).then(res => {
             commit(types.GET_ACTIVITY_LIST, res)
-console.log(res)
+
         })
     },
     get_activity_official_list({ commit }, param) {
         api.v3_activity_list(param).then(res => {
             commit(types.GET_ACTIVITY_OFFICIAL_LIST, res)
-console.log(res)
+
         })
     },
     get_activity_detail({ commit }, param) {
         api.v3_activity_activity(param).then(res => {
             commit(types.GET_ACTIVITY_DETAIL, res)
-console.log(res)
+
         })
     },
 }

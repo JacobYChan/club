@@ -19,7 +19,7 @@ const actions = {
         //     commit(types.COM_LOADING_STATUS, true),
         //     commit(types.GET_SPORTS_SCORLL_STATUS, false)
         api.v3_notify_list().then(res => {
-            console.log(res)
+            
         //             commit(types.COM_LOADING_STATUS, false),
         //             commit(types.GET_SPORTS_SCORLL_STATUS, true)
             commit(types.GET_MESSAGE_LIST, res)
@@ -97,7 +97,6 @@ const mutations = {
     // "user": friends.getUserInfo('runid_xuxiang') // 此消息的用户
 },
 ];
-            console.log(state.messages);
         // } else {
             // state.sportsList = state.sportsList.concat(res.data)
         // }

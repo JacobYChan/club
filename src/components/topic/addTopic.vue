@@ -109,9 +109,8 @@
                     cid: this.id,
                     img: JSON.stringify(this.imgUrls),
                 }
-                console.log(data);
                 api.v3_dynamic_update(data).then(res => {
-                    console.log(res);
+                    ;
                     if (res.retcode == 200) {
                         this.show_success = true;
                         setTimeout(() => {
@@ -122,7 +121,6 @@
                         this.errorMsg = res.errmsg;
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             },
             toggleAddPic: function () {

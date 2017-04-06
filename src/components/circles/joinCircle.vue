@@ -35,11 +35,9 @@
                 this.results = val ? getResult(this.value) : []
             },
             onFocus() {
-                console.log('on focus')
 
             },
             onCancel() {
-                console.log('on cancel')
             },
             handler: function (site) {
                 this.$router.replace(site);

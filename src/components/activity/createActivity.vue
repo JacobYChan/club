@@ -112,16 +112,13 @@
                     cid: 15,
                     img: JSON.stringify(this.imgUrls),
                 }
-                console.log(data);
                 api.v3_activity_update(data).then(res => {
-                    console.log(res);
                     if (res.retcode == 200) {
                         this.$router.replace('/activity')
                     } else {
 
                     }
                 }).catch(error => {
-                    console.log(error)
                 })
             },
             toggleAddPic: function () {

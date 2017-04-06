@@ -9,13 +9,11 @@ axios.defaults.baseURL = 'http://sport.jsheyun.net';
 // post传参序列化
 axios.interceptors.request.use((config) => {
     if (config.method  === 'post') {
-console.log(localStorage.getItem('loginopenid'));
         config.data = qs.stringify(config.data);
     }
     return config;
 },(error) =>{
 //      _.toast("错误的传参", 'fail');
-    console.log('错误的传参');
     return Promise.reject(error);
 });
 
@@ -28,7 +26,6 @@ axios.interceptors.response.use((res) =>{
     return res;
 }, (error) => {
 //     _.toast("网络异常", 'fail');
-    console.log('网络异常');
     return Promise.reject(error);
 });
 

@@ -28,7 +28,7 @@ router.beforeEach(function (to, from, next) {
     store.dispatch('updateLoadingStatus', { isLoading: true })
     setTimeout(function () {
         next()
-    }, 10)
+    }, 100)
 
 })
 

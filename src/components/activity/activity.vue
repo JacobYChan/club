@@ -108,7 +108,7 @@
                 return count(this.activity_list);
             },
             calWidth() {
-                console.log(count(this.activity_official_list) + "----------------------")
+                
                 return count(this.activity_official_list) * 15.6 + .5;
             },
         },
