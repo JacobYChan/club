@@ -26,7 +26,7 @@
                 </flexbox>
                 <div class="bottom ellipsis">
                     <div class="location">
-                         <form class="subForm" onsubmit="return false">
+                        <form class="subForm" onsubmit="return false">
                             <input type="text" v-model="commentValue[key]" placeholder="评论" class="weui-search-bar__input">
                             <input type="submit" value="提交" class="subBtn" @click="addComment(item.id,key)">
                         </form>
@@ -99,7 +99,7 @@
             }
         },
         created() {
-
+            this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, isfriend: 1, uid: localStorage.getItem('loginopenid') })
         },
         computed: {
             ...mapGetters([

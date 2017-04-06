@@ -32,6 +32,7 @@
         },
         computed: {
             calWidth() {
+                console.log(this.articlecategory.length+"======================")
                 return this.articlecategory.length * 4;
             },
             ...mapGetters([

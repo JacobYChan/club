@@ -47,6 +47,7 @@
 <script>
     import { Scroller, dateFormat } from 'vux'
     import { mapGetters } from 'vuex'
+    import { count } from '../../config/mUtils'
     export default {
         components: {
             Scroller,
@@ -87,6 +88,10 @@
                 return d;
             }
         },
+        created() {
+            this.$store.dispatch('get_activity_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+            this.$store.dispatch('get_activity_type', { uid: localStorage.getItem('loginopenid') })
+        },
         computed: {
             activityUrl() {
                 return `http://sport.jsheyun.net/home/activity?uid=${localStorage.getItem('loginopenid')}`
@@ -100,14 +105,11 @@
                 return Date.parse(new Date()) / 1000
             },
             calLength() {
-                var n = 0;
-                for (var i in this.activity_list) {
-                    n++;
-                }
-                return n
+                return count(this.activity_list);
             },
             calWidth() {
-                return this.$store.state.activity.activity_official_list.length * 15.6 + .5;
+                console.log(count(this.activity_official_list) + "----------------------")
+                return count(this.activity_official_list) * 15.6 + .5;
             },
         },
     }

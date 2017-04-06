@@ -32,7 +32,7 @@
             <div class="options">
                 <p>你想发布话题到哪个圈子？</p>
                 <template v-for="(value,key) in circles_near_list">
-                    <cell :title="item.name" @click.native="confirmOption(item.name,item.id)" v-for="item in value">
+                    <cell :title="item.name" @click.native="confirmOption(item.name,item.id)" :key="index" v-for="(item,index) in value">
                         <img slot="icon" style="display:block;margin-right:5px;" :src="item.icon">
                     </cell>
                 </template>

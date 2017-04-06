@@ -9,7 +9,7 @@
                 <label>活动类型</label>
             </div>
             <checker default-item-class="activity_type" v-model="value_tid" selected-item-class="activity_type-selected">
-                <checker-item v-for="item in activity_type" :value="item.id">{{item.name}}</checker-item>
+                <checker-item v-for="(item,index) in activity_type" :key="index" :value="item.id">{{item.name}}</checker-item>
             </checker>
         </div>
         <group title="活动介绍" class="activity_detail">
