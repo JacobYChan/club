@@ -12,7 +12,7 @@
                     <span v-if="item.isfocus==0" class="focus" @click="_focus(item.uid)">关注</span>
                     <span v-else class="focus">已关注</span>
                 </div>
-                <div class="conten_title">{{item.title}}<br>{{item.content}}</div>
+                <div class="conten_title">{{item.title}}<br v-if="item.title!==null">{{item.content}}</div>
                 <div class="content_img">
                     <div v-for="(src,index) in item.img" style="text-align:center;">
                         <span style="font-size:.6rem">图片加载中...</span>
@@ -66,15 +66,15 @@
             filterDate: function (val) {
                 let now = Date.parse(new Date()) / 1000;
                 let time = now - val;
-                if (time < 0){
+                if (time < 0) {
                     return '';
-                }else if(time<30){
+                } else if (time < 30) {
                     return "刚刚"
-                }else if(time< 60) {
-                    return parseInt(time)+"秒前"
-                } else if ((time / 60)<60) {
+                } else if (time < 60) {
+                    return parseInt(time) + "秒前"
+                } else if ((time / 60) < 60) {
                     parseInt((time / 60)) + '分钟前'
-                }else if ((time / 3600) < 24) {
+                } else if ((time / 3600) < 24) {
                     return parseInt(time / 3600) + '小时前'
                 } else if ((time / 86400) < 31) {
                     return parseInt(time / 86400) + '天前'
@@ -86,7 +86,11 @@
             }
         },
         created() {
-            this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, isfriend: 1, uid: localStorage.getItem('loginopenid') })
+            var num = count(this.circles_friend_list)
+            for (var i = 0; i < num; i++) {
+                this.commentValue.push('')
+            }
+            console.log(num + "========");
         },
         computed: {
             ...mapGetters([
@@ -104,7 +108,7 @@
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "关注成功"
-                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 1000, isfriend: 1, uid: localStorage.getItem('loginopenid') })
                     } else {
                         this.show_error = true;
                         this.errorMsg = res.errmsg;
@@ -113,10 +117,6 @@
                 })
             },
             addComment(did, key) {
-                var num = count(this.circles_friend_list)
-                for (var i = 0; i < num; i++) {
-                    this.commentValue.push('')
-                }
                 let data = {
                     uid: localStorage.getItem('loginopenid'),
                     did: did,
@@ -126,8 +126,9 @@
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "评论成功"
-                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 1000, isfriend: 1, uid: localStorage.getItem('loginopenid') })
                         this.commentValue[key] = ""
+                        window.blur()
                     } else {
                         this.show_error = true;
                         this.errorMsg = res.errmsg;
@@ -140,13 +141,13 @@
                     uid: localStorage.getItem('loginopenid'),
                     did: did,
                 }
-                
+
                 api.v3_dynamic_likes(data).then(res => {
                     // 
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "点赞成功"
-                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 100, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_friend_list', { begin: 0, offset: 1000, isfriend: 1, uid: localStorage.getItem('loginopenid') })
                     } else {
                         this.show_error = true;
                         this.errorMsg = res.errmsg;
@@ -269,7 +270,7 @@
                 .location {
                     .subForm {
                         border-radius: .2rem;
-                        width: 90%;
+                        width: 85%;
                         .weui-search-bar__input {
                             width: 100%;
                             border: 0;
@@ -281,8 +282,10 @@
                         .subBtn {
                             padding: .3rem .2rem;
                             border-radius: .2rem;
-                            background-color: #eee;
-                            margin-left: -.2rem;
+                            background-color: #1CC019;
+                            margin-left: -.3rem;
+                            color: #fff;
+                            font-size: .7rem;
                         }
                     }
                 }

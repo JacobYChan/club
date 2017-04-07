@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -17,7 +16,12 @@ export default new Router({
             children: [
                 {
                     path: '/',
-                    component: resolve => require(["../components/circles/circleYZ.vue"], resolve)
+                    component: resolve => require(["../components/circles/circleYZ.vue"], resolve),
+                    beforeEnter: (to, from, next) => {
+                        setTimeout(function () {
+                            next()
+                        }, 400)
+                    }
                 },
                 {
                     path: 'friend',
@@ -73,7 +77,12 @@ export default new Router({
         {
             path: '/activity',
             name: 'activity',
-            component: resolve => require(["../components/activity/activity"], resolve)
+            component: resolve => require(["../components/activity/activity"], resolve),
+            beforeEnter: (to, from, next) => {
+                setTimeout(function () {
+                    next()
+                }, 100)
+            }
         },
         {
             path: '/activity/find/check/detail',
@@ -104,11 +113,11 @@ export default new Router({
         {
             path: '/article',
             component: resolve => require(["../components/articles/article"], resolve),
-             redirect: '/article/1',
+            redirect: '/article/1',
             children: [
                 {
                     path: '/article/:categoryid',
-                    name:'articleList',
+                    name: 'articleList',
                     component: resolve => require(["../components/articles/articleList"], resolve)
                 }
             ]
@@ -117,7 +126,7 @@ export default new Router({
             path: '/article/detail/show/:articleid',
             name: 'article',
             components: {
-                "subPage":resolve=>require(["../components/articles/articleDetail"],resolve)
+                "subPage": resolve => require(["../components/articles/articleDetail"], resolve)
             }
         },
         {

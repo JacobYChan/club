@@ -1,6 +1,6 @@
 <template>
     <div class="activity">
-        <scroller lock-y :scrollbar-x=false ref="scroller">
+        <scroller lock-y :scrollbar-x=false ref="scroller" v-if="calOfficalLength!==0">
             <div class="scroller" :style="{width:calWidth+'rem'}">
                 <template v-for="(value,key) in activity_official_list">
                     <router-link class="officialActivity_ceil" :to="{path:'activity/find/check/detail',query:{activityid:item.id}}" tag="div"
@@ -103,6 +103,9 @@
             ]),
             nowDate() {
                 return Date.parse(new Date()) / 1000
+            },
+            calOfficalLength(){
+                return count(this.activity_official_list);
             },
             calLength() {
                 return count(this.activity_list);

@@ -32,7 +32,7 @@
                 <img :src="item.headimg" v-for="item in activity_detail.enroll">
             </div>
         </div>
-        <div class="join">
+        <div class="join" v-if="activity_detail.stime*1000>new Date()">
             <x-button type="primary" @click.native="_activity_enroll" v-if="!activity_detail.is_in">报名</x-button>
             <x-button type="primary" disabled v-else>已成功报名</x-button>
         </div>
