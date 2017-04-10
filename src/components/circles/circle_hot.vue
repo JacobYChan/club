@@ -57,19 +57,19 @@
                 line-height: 1.5;
                 width: 80%;
                 h3 {
-                    @include sc(.8rem, #333);
+                    @include sc(.7rem, #333);
                     font-weight: normal;
                     margin-top: -.1rem;
                 }
                 p {
-                    @include sc(.5rem, #999);
+                    @include sc(.7rem, #999);
                 }
             }
             .circle_member {
                 position: absolute;
                 right: .4rem;
                 top: .5rem;
-                @include sc(.5rem, #999);
+                @include sc(.6rem, #999);
             }
         }
     }

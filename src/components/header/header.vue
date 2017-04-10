@@ -11,7 +11,7 @@
                     <p>消息</p>
                 </tab-item>
                 <tab-item :selected="this.$route.path.split('/')[1]=='article'" @on-item-click="handler('/article')"><i class="iconfont icon-xinlikepu"></i>
-                    <p>科普</p>
+                    <p>知识</p>
                 </tab-item>
             </tab>
     </div>
@@ -48,11 +48,11 @@
         width: 100%;
         z-index: 100;
         .vux-tab {
-            height: 3rem;
+            height: 2.5rem;
             .vux-tab-item {
                 line-height: 1.2;
                 .iconfont {
-                    font-size: 1.5rem;
+                    font-size: 1.2rem;
                 }
             }
         }

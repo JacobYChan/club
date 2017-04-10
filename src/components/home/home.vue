@@ -2,7 +2,7 @@
     <div class="home">
         <tab-header></tab-header>
         <transition name="router-fade" mode="out-in">
-            <router-view style="margin-top:2.5rem;"></router-view>
+            <router-view style="margin-top:2rem;"></router-view>
         </transition>
     </div>
 </template>

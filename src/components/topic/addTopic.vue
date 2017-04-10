@@ -409,9 +409,7 @@ function tick(i, cb) {
     //     color: #999;
     // }
     .sub {
-        position: fixed;
-        width: 100%;
-        bottom: 0;
+       margin-top: 3rem;
     }
 }
 </style>

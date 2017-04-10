@@ -1,6 +1,6 @@
 <template>
     <div class="tab">
-        <tab custom-bar-width="3rem">
+        <tab custom-bar-width="3rem" bar-active-color="#FF9900" active-color="#FF9900">
             <tab-item :selected="this.$route.path.split('/').length==2"  @on-item-click="handler('/home')">跃动扬州圈</tab-item>
             <tab-item :selected="this.$route.path.split('/')[2]=='friend'" @on-item-click="handler('/home/friend')">好友圈</tab-item>
             <tab-item :selected="this.$route.path.split('/')[2]=='join'" @on-item-click="handler('/home/join')">加入圈子</tab-item>
@@ -36,9 +36,9 @@
         width: 100%;
         background-color:#fff;
         .vux-tab{
-            height: 2.5rem;
+            height: 2rem;
             .vux-tab-item{
-                line-height: 2.5rem;
+                line-height: 2rem;
             }
         }
     }

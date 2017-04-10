@@ -375,7 +375,7 @@ export default {
                             padding: .25rem 0;
                         }
                         .subBtn {
-                            padding: .3rem .2rem;
+                            padding: .2rem .2rem;
                             border-radius: .2rem;
                             background-color: #1CC019;
                             margin-left: -.3rem;

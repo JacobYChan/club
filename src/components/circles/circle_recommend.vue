@@ -53,12 +53,12 @@
                 line-height: 1.5;
                 width: 80%;
                 h3 {
-                    @include sc(.8rem, #333);
+                    @include sc(.7rem, #333);
                     font-weight: normal;
                     margin-top: -.1rem;
                 }
                 p {
-                    @include sc(.5rem, #999);
+                    @include sc(.7rem, #999);
                 }
             }
         }
