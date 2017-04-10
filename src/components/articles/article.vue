@@ -64,7 +64,7 @@ export default {
             @include wh(4rem, 2rem);
             text-align: center;
             span {
-                @include sc(.8rem, #000);
+                @include sc(.7rem, #000);
             }
         }
     }
