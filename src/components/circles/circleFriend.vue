@@ -95,7 +95,7 @@ export default {
             } else if (time < 60) {
                 return parseInt(time) + "秒前"
             } else if ((time / 60) < 60) {
-                parseInt((time / 60)) + '分钟前'
+                return parseInt((time / 60)) + '分钟前'
             } else if ((time / 3600) < 24) {
                 return parseInt(time / 3600) + '小时前'
             } else if ((time / 86400) < 31) {
