@@ -90,7 +90,7 @@
                 width: 70%;
                 line-height: 1.5;
                 .desc-author {
-                    @include sc(.8rem, #000);
+                    @include sc(.7rem, #000);
                 }
                 .desc-msg {
                     @include sc(.7rem, #666);
