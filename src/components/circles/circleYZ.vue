@@ -1,7 +1,7 @@
 <template>
     <div class="circleYZ">
         <!--<scroller lock-x scrollbar-y ref="scroller" :pullup-config="pullupConfig" :pulldown-config="pulldownConfig" @on-pullup-loading="loadMore"
-            @on-pulldown-loading="refresh" v-model="status" use-pulldown use-pullup height="21rem">
+            @on-pulldown-loading="refresh" v-model="status" use-pulldown use-pullup height="20.5rem">
             <div class="scroller"> -->
                 <template v-for="(value,key) in circles_yz_list" class="content">
                     <!--按时间排序-->
@@ -18,8 +18,8 @@
                         <section class="conten_title">{{item.title}}<br v-if="item.title!==null">{{item.content}}</section>
                         <section class="content_img">
                             <section v-for="(src,index) in item.img" style="text-align:center;">
-                             <span style="font-size:.6rem">图片加载中...</span>
-                                <x-img width="200" :src="src" :webp-src="`${src}?type=webp`" @on-success="success" @on-error="error"></x-img>
+                                <span style="font-size:.6rem">图片加载中...</span>
+                                <x-img width="200" :src="src"  container=".xs-container" @on-success="success" @on-error="error"></x-img>
                             </section>
                         </section>
                         <flexbox orient="vertical" class="comment" v-show="item.comments!=0">
@@ -96,10 +96,15 @@
         },
         created() {
             var num = count(this.circles_yz_list)
-            for (var i = 0; i < num; i++) {
+            for (let i = 0; i < num; i++) {
                 this.commentValue.push('')
             }
+            for (let j = 0; j < this.n; j++) {
+                this.yzList.push(this.circles_yz_list[j])
+            }
+            console.log(this.yzList.length + "++++++++++++");
             console.log(num);
+
         },
         computed: {
             ...mapGetters([
@@ -120,7 +125,13 @@
             loadMore() {
                 setTimeout(() => {
                     this.n += 10
-                    this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: this.n, uid: localStorage.getItem('loginopenid') })
+                    for (let j = this.n - 10; j < this.n; j++) {
+                        this.yzList.push(this.circles_yz_list[j])
+                    }
+                    if (this.n-10 > count(this.circles_yz_list)) {
+                        this.$refs.scroller.disablePullup()
+                        console.log('没有更多数据了。。。')
+                    }
                     setTimeout(() => {
                         this.$refs.scroller.donePullup()
                     }, 10)
@@ -155,7 +166,7 @@
                     if (res.retcode == 200) {
                         this.show_success = true;
                         this.successMsg = "评论成功"
-                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset:1000, uid: localStorage.getItem('loginopenid') })
+                        this.$store.dispatch('get_circles_yz_list', { begin: 0, offset: 1000, uid: localStorage.getItem('loginopenid') })
                         this.commentValue[key] = ""
                         window.blur()
                     } else {
@@ -189,6 +200,7 @@
                 ele.parentNode.removeChild(span)
             },
             error(src, ele, msg) {
+                console.log("error"+"====================")
                 const span = ele.parentNode.querySelector('span')
                 span.innerText = '加载失败。。。'
             }
@@ -217,6 +229,7 @@
                     loadingContent: '加载中...'
                 },
                 n: 10,
+                yzList: [],
                 options: {
                     getThumbBoundsFn(index) {
                         // find thumbnail element
@@ -334,7 +347,7 @@
                     .location {
                         .subForm {
                             border-radius: .2rem;
-                            width: 85%;
+                            width: 80%;
                             .weui-search-bar__input {
                                 width: 100%;
                                 border: 0;

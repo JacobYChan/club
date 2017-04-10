@@ -20,7 +20,7 @@ filters(Vue)
 
 router.beforeEach(function (to, from, next) {
     store.dispatch('get_activity_official_list', { begin: 0, userid: 0, offset: 1000, uid: localStorage.getItem('loginopenid') })
-    store.dispatch('get_circles_yz_list', { begin: 0, offset: 500, uid: localStorage.getItem('loginopenid') })
+    store.dispatch('get_circles_yz_list', { begin: 0, offset: 1000, uid: localStorage.getItem('loginopenid') })
 
     store.dispatch('get_article_category_list')
     store.dispatch('get_message_sys_list', { type: 1, begin: 0, offset: 1000, uid: localStorage.getItem('loginopenid') });

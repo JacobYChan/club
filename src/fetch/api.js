@@ -60,6 +60,7 @@ export default {
 
   	// 动态的评论列表
   	v3_dynamic_dynamic(params) {
+          
     	return fetch('/v2/api/dynamic/dynamic', params);
   	},
 
