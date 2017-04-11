@@ -9,7 +9,7 @@
             <tab-item :selected="this.$route.path.split('/')[3]=='hot'" @on-item-click="handler('/home/join/hot')">热门</tab-item>
         </tab>
         <transition name="router-fade" mode="out-in">
-            <router-view style="margin-bottom:2rem;"></router-view>
+            <router-view style="margin-bottom:2rem;padding-bottom: 2rem;"></router-view>
         </transition>
         <div class="create_circle">
             <p>各种圈子福利等着你</p>

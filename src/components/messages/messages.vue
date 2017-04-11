@@ -2,7 +2,7 @@
     <div class="messages">
         <ul class="messages_list">
             <msg-item :item="messagesyslist"></msg-item>
-            <msg-item :item="messageapplist"></msg-item>
+            <msg-item  v-if="messageapplist.length!=undefined" :item="messageapplist"></msg-item>
         </ul>
     </div>
 </template>
@@ -15,7 +15,6 @@
             msgItem
         },
         created(){
-            
         },
         computed: {
             ...mapGetters([

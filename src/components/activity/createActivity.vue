@@ -214,6 +214,7 @@ export default {
                 reader.readAsDataURL(file[i]);
                 reader.onload = function (e) {
                     lrz(e.target.result, { width: 480 }).then(function (rst) {
+                        vm.imgUrls.push(rst.base64);
                         return rst;
                     }).always(function () {
                         // 清空文件上传控件的值
