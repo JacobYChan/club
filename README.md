@@ -4,4 +4,4 @@
 
 
 
-![](https://github.com/JacobYChan/club/blob/develop/src/common/images/xingsheng.jpg)
+![http://www.baidu.com](https://github.com/JacobYChan/club/blob/develop/src/common/images/xingsheng.jpg)
